@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title "Profil de " ~ user.name %}
+
+{% block body %}
+
+    <h2>Profil de {{ user.name }}</h2>
+
+    {{ form(form) }}
+
+{%  endblock %}
