@@ -2,7 +2,7 @@
 
 {% block body %}
     <div>
-        <h1>Bienvenue `utilisateur` !</h1>
+        <h1>Bienvenue {{ user.surname }} !</h1>
         <p>La date est le <b>{{ "now" | date("d/m/Y") }}</b>. Il est <b>{{ "now" | date("H:i T") }}</b>.</p>
     </div>
 
@@ -44,10 +44,9 @@
             <li>
                 <label for="f-campus">Campus</label>
                 <select name="campus" id="f-campus">
-                    <option value="volvo">Volvo</option>
-                    <option value="saab">Saab</option>
-                    <option value="mercedes">Mercedes</option>
-                    <option value="audi">Audi</option>
+                    {% for a_campus in campus %}
+                        <option value="{{ a_campus.id }}">{{ a_campus.name }}</option>
+                    {% endfor %}
                 </select>
             </li>
             <li>
