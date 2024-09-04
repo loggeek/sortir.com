@@ -47,7 +47,7 @@ class ExcursionController extends abstractController
                 $em->persist($excursion);
                 $em->flush();
 
-                return $this->redirectToRoute('home');
+                return $this->redirectToRoute('app_home');
             }
             else{
                 $this->addFlash('danger', "Formulaire invalide");

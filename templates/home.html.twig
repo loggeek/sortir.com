@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div>
+        <h1>Bienvenue {{ user.surname }} !</h1>
+        <p>La date est le <b>{{ "now" | date("d/m/Y") }}</b>. Il est <b>{{ "now" | date("H:i T") }}</b>.</p>
+    </div>
+
+    <div>
+        <h2><i>Sorties</i></h2>
+        <a href="{{ path('app_excursion_form') }}">Créer une sortie</a>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Nom de la sortie</th>
+                    <th scope="col">Date de la sortie</th>
+                    <th scope="col">Date de clôture</th>
+                    <th scope="col">Inscrits / Places</th>
+                    <th scope="col">Etat</th>
+                    <th scope="col">Inscrit</th>
+                    <th scope="col">Organisateur</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for excursion in excursions %}
+                    <tr>
+                        <td>{{ excursion.name }}</td>
+                        <td>{{ excursion.date | date }}</td>
+                        <td>{{ excursion.deadline | date }}</td>
+                        <td>{{ excursion.participants.count }} / {{ excursion.nbSeats }}</td>
+                        <td>{{ excursion.status.translate }}</td>
+                        <td>{# todo: &check; si $user est inscrit #}</td>
+                        <td>{{ excursion.organizer.name }}</td>
+                        <td>{# todo: liens vers les actions #}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div>
+        <h2><i>Filtres</i></h2>
+        <button>Appliquer</button>
+        <button>Réinitialiser</button>
+        <ul>
+            <li>
+                <label for="f-campus">Campus</label>
+                <select name="campus" id="f-campus">
+                    {% for a_campus in campus %}
+                        <option value="{{ a_campus.id }}" {% if user.campus.id == a_campus.id %} selected {% endif %}>{{ a_campus.name }}</option>
+                    {% endfor %}
+                </select>
+            </li>
+            <li>
+                <label for="f-excname">Rechercher la sortie</label>
+                <input type="search" id="f-excname" name="excname" placeholder="Recherche..." />
+            </li>
+            <li>
+                Dates entre <label for="f-datemin"></label><input type="date" id="f-datemin" name="datemin"> et
+                <label for="f-datemax"></label><input type="date" id="f-datemax" name="f-datemax">
+            </li>
+            <li>
+                <input type="checkbox" id="f-organizer" name="organizer" />
+                <label for="f-organizer">Uniquement les sorties que j'organise</label>
+            </li>
+            <li>
+                <input type="checkbox" id="f-participating" name="participating" />
+                <label for="f-participating">Uniquement les sorties auxquelles je participe</label>
+            </li>
+            <li>
+                <input type="checkbox" id="f-nonparticipating" name="nonparticipating" />
+                <label for="f-nonparticipating">Exclure les sorties auxquelles je participe</label>
+            </li>
+            <li>
+                <input type="checkbox" id="f-past" name="past" />
+                <label for="f-past">Afficher les sorties passées</label>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
