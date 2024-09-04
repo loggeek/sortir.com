@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\campus;
 use App\Entity\Excursion;
+use App\Entity\Location;
 use App\Entity\User;
 use App\Enum\ExcursionStatus;
 use Doctrine\DBAL\Types\StringType;
@@ -47,9 +48,14 @@ class ExcursionType extends AbstractType
 //                'label' => 'Participants',
 //            ])
             ->add('campus', EntityType::class, [
-                'class' => campus::class,
+                'class' => Campus::class,
                 'choice_label' => 'name',
                 'label' => 'Campus',
+            ])
+            ->add('location', EntityType::class, [
+                'class' => Location::class,
+                'choice_label' => 'name',
+                'label' => 'Lieu',
             ])
         ;
     }
