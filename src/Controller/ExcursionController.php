@@ -21,7 +21,6 @@ class ExcursionController extends abstractController
         $excursion = new Excursion();
         $excursionForm = $this->createForm(ExcursionType::class, $excursion);
 
-//        var_dump($excursion);
         $excursionForm->handleRequest($request);
 
         if ($excursionForm->isSubmitted()) {
