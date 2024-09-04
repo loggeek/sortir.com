@@ -3,7 +3,7 @@
 {% block body %}
     <div>
         <h1>Bienvenue {{ user.surname }} !</h1>
-        <p>La date est le <b>{{ "now" | date("d/m/Y") }}</b>. Il est <b>{{ "now" | date("H:i T") }}</b>.</p>
+        <p>La date est le <b>{{ "now" | date("d/m/Y") }}</b>. Il est <b>{{ "now" | date("H:i", "Europe/Paris") }}</b>.</p>
     </div>
 
     <div>
@@ -27,8 +27,8 @@
                 {% for excursion in excursions %}
                     <tr>
                         <td>{{ excursion.name }}</td>
-                        <td>{{ excursion.date | date }}</td>
-                        <td>{{ excursion.deadline | date }}</td>
+                        <td>{{ excursion.date | date("d/m/Y H:i", "Europe/Paris") }}</td>
+                        <td>{{ excursion.deadline | date("d/m/Y") }}</td>
                         <td>{{ excursion.participants.count }} / {{ excursion.nbSeats }}</td>
                         <td>{{ excursion.status.translate }}</td>
                         <td>{# todo: &check; si $user est inscrit #}</td>
