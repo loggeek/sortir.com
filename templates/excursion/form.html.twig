@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+{% block body %}
+
+    <h2>Ajouter un produit</h2>
+
+    {{ form_start(excursionForm) }}
+
+    <div>
+        {{ form_label(excursionForm.name) }}
+        {{ form_widget(excursionForm.name) }}
+
+        {{ form_label(excursionForm.date) }}
+        {{ form_widget(excursionForm.date) }}
+
+        {{ form_label(excursionForm.deadline) }}
+        {{ form_widget(excursionForm.deadline) }}
+
+        {{ form_label(excursionForm.nb_seats) }}
+        {{ form_widget(excursionForm.nb_seats) }}
+
+        {{ form_label(excursionForm.duration) }}
+        {{ form_widget(excursionForm.duration) }}
+
+        {{ form_label(excursionForm.description) }}
+        {{ form_widget(excursionForm.description) }}
+    </div>
+
+    <div>
+        {{ form_label(excursionForm.campus) }}
+        {{ form_widget(excursionForm.campus) }}
+
+
+
+    </div>
+
+    <button class="btn-primary">Enregistrer</button>
+
+{#    {{ form_end(excursionForm) }}#}
+
+{% endblock %}
