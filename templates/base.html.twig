@@ -19,7 +19,8 @@
     <body>
         {% include 'navbar.html.twig' %}
         <main class="container my-4">
-            {% block body %}{% endblock %}
+          {% include 'others/flash.html.twig' %}
+          {% block body %}{% endblock %}
         </main>
     </body>
 </html>
