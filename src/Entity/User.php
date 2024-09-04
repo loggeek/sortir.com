@@ -52,6 +52,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Excursion::class, mappedBy: 'participants')]
     private Collection $excursions_participating;
 
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    private ?Campus $campus = null;
+
     public function __construct()
     {
         $this->excursions_organized = new ArrayCollection();
@@ -222,5 +225,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         return (string) $this->username;
+    }
+
+    public function getCampus(): ?Campus
+    {
+        return $this->campus;
+    }
+
+    public function setCampus(?Campus $campus): static
+    {
+        $this->campus = $campus;
+
+        return $this;
     }
 }
