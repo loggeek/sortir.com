@@ -19,7 +19,7 @@ class HomeController extends AbstractController
         }
 
         return $this->render('home.html.twig', [
-            'user' => $this->getUser,
+            'user' => $this->getUser(),
             'excursions' => $excursionService->afficher()
         ]);
     }
