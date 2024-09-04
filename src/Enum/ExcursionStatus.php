@@ -2,8 +2,6 @@
 
 namespace App\Enum;
 
-namespace App\Enum;
-
 enum ExcursionStatus: string
 {
     case Created = 'created';

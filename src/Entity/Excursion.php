@@ -35,7 +35,7 @@ class Excursion
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(type: "string", enumType: ExcursionStatus::class)]
+    #[ORM\Column(type: 'string', enumType: ExcursionStatus::class)]
     private ?ExcursionStatus $status = null;
 
     #[ORM\ManyToOne(inversedBy: 'excursions_organized')]
@@ -51,6 +51,10 @@ class Excursion
     #[ORM\ManyToOne(inversedBy: 'excursions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Campus $campus = null;
+
+    #[ORM\ManyToOne(inversedBy: 'excursions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Location $location = null;
 
     public function __construct()
     {
@@ -190,6 +194,18 @@ class Excursion
     public function setCampus(?Campus $campus): static
     {
         $this->campus = $campus;
+
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): static
+    {
+        $this->location = $location;
 
         return $this;
     }
