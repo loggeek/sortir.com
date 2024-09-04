@@ -37,12 +37,12 @@ class ProfilUserType extends AbstractType
                 'label' => 'Mot de passe : '
             ])
 
-            ->add('save', SubmitType::class, [
-                'label' => "Enregistrer"
-            ])
-            ->add('cancel', ResetType::class, [
-                'label' => 'Annuler'
-            ])
+//            ->add('save', SubmitType::class, [
+//                'label' => "Enregistrer"
+//            ])
+//            ->add('cancel', ResetType::class, [
+//                'label' => 'Annuler'
+//            ])
         ;
     }
 
