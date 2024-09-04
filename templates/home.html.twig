@@ -3,7 +3,7 @@
 {% block body %}
     <div>
         <h1>Bienvenue {{ user.surname }} !</h1>
-        <p>La date est le <b>{{ "now" | date("d/m/Y") }}</b>. Il est <b>{{ "now" | date("H:i T") }}</b>.</p>
+        <p>La date est le <b>{{ "now" | date("d/m/Y") }}</b>. Il est <b>{{ "now" | date("H:i", "Europe/Paris") }}</b>.</p>
     </div>
 
     <div>
