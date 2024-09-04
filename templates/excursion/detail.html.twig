@@ -3,9 +3,68 @@
 {% block title %}Détail de l'excursion{% endblock %}
 {% block body %}
 
-    <h2>Détail de la sortie</h2>
-    <h3>{{ excursion.name }}</h3>
+    <h2 class="text-center">Afficher une sortie</h2>
 
+    <div class="d-flex flex-row m-3">
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th scope="row">Nom de la sortie</th>
+                <td>{{ excursion.name }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Date et heure de la sortie</th>
+                <td>{{ excursion.date|date('D d M Y (H:i)') }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Date limite d'inscription</th>
+                <td>{{ excursion.deadline|date('D d M Y') }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Nombre de places</th>
+                <td>{{ excursion.nb_seats }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Durée</th>
+                <td>{{ excursion.duration }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Description et infos</th>
+                <td>{{ excursion.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th scope="row">Campus</th>
+                <td>{{ excursion.campus.name }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Lieu</th>
+                <td>{{ excursion.location.name }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Rue</th>
+                <td>{{ excursion.location.getAddress() }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Code postale</th>
+                <td>{{ excursion.location.town.zipcode }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Latitude</th>
+                <td>{{ excursion.location.latitude }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Longitude</th>
+                <td>{{ excursion.location.longitude }}</td>
+            </tr>
+        </tbody>
+    </table>
+    </div>
 
 
 {% endblock %}

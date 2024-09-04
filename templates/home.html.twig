@@ -37,8 +37,7 @@
                             {% if excursion.status.value != 'created' %}
                                 <a href="{{ path('app_excursion_detail', { 'id': excursion.id }) }}">Afficher</a>
                             {% endif %}
-
-                            {% if excursion.organizer.id != user.id %}
+                            {% if excursion.organizer.id == user.id %}
                                 {% if excursion.status.value == 'created' %}
                                     <a href="#">Modifier</a>
                                     <a href="#">Publier</a>
