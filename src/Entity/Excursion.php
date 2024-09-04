@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ExcursionRepository::class)]
 class Excursion
@@ -18,21 +19,27 @@ class Excursion
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Le nom n\'est pas valide')]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Assert\NotBlank(message: 'La date n\'est pas valide')]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\NotBlank(message: 'La date n\'est pas valide')]
     private ?\DateTimeInterface $deadline = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: 'Le nombre de sièges n\'est pas valide')]
     private ?int $nb_seats = null;
 
     #[ORM\Column(nullable: true)]
+    #[Assert\NotBlank(message: 'La durée de sièges n\'est pas valide')]
     private ?int $duration = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank(message: 'La description de sièges n\'est pas valide')]
     private ?string $description = null;
 
     #[ORM\Column(type: 'string', enumType: ExcursionStatus::class)]
@@ -54,11 +61,14 @@ class Excursion
 
     #[ORM\ManyToOne(inversedBy: 'excursions')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank(message: 'Le lieu n\'est pas valide')]
     private ?Location $location = null;
 
     public function __construct()
     {
         $this->participants = new ArrayCollection();
+        $this->date = new \DateTime();
+        $this->deadline = new \DateTime();
     }
 
     public function getId(): ?int

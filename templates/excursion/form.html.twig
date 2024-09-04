@@ -1,45 +1,77 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Création d'une sorite{% endblock %}
 {% block body %}
 
-    <h2>Ajouter un produit</h2>
+    <h2 class="text-center">Créer une sortie</h2>
 
     {{ form_start(excursionForm) }}
 
-    <div>
-        {{ form_label(excursionForm.name) }}
-        {{ form_widget(excursionForm.name) }}
+    <div class="d-flex justify-content-center flex-row m-3">
+        <div class="flex-grow-1 me-3">
+            {{ form_label(excursionForm.name) }}
+            {{ form_widget(excursionForm.name) }}
+            {{ form_errors(excursionForm.name) }}
 
-        {{ form_label(excursionForm.date) }}
-        {{ form_widget(excursionForm.date) }}
+            {{ form_label(excursionForm.date) }}
+            {{ form_widget(excursionForm.date) }}
+            {{ form_errors(excursionForm.date) }}
 
-        {{ form_label(excursionForm.deadline) }}
-        {{ form_widget(excursionForm.deadline) }}
+            {{ form_label(excursionForm.deadline) }}
+            {{ form_widget(excursionForm.deadline) }}
+            {{ form_errors(excursionForm.deadline) }}
 
-        {{ form_label(excursionForm.nb_seats) }}
-        {{ form_widget(excursionForm.nb_seats) }}
+            {{ form_label(excursionForm.nb_seats) }}
+            {{ form_widget(excursionForm.nb_seats) }}
+            {{ form_errors(excursionForm.nb_seats) }}
 
-        {{ form_label(excursionForm.duration) }}
-        {{ form_widget(excursionForm.duration) }}
+            {{ form_label(excursionForm.duration) }}
+            {{ form_widget(excursionForm.duration) }}
+            {{ form_errors(excursionForm.duration) }}
 
-        {{ form_label(excursionForm.description) }}
-        {{ form_widget(excursionForm.description) }}
+            {{ form_label(excursionForm.description) }}
+            {{ form_widget(excursionForm.description) }}
+            {{ form_errors(excursionForm.description) }}
+        </div>
+
+        <div class="flex-grow-1 me-3">
+            {{ form_label(excursionForm.campus) }}
+            {{ form_widget(excursionForm.campus) }}
+            {{ form_errors(excursionForm.campus) }}
+
+            <label for="town">Ville</label>
+            <select id="town" name="town" class="form-select">
+                <option>-- Selectionner une vile --</option>
+                {% for town in towns %}
+                    <option {{ town.id }}>{{ town.name }}</option>
+                {% endfor %}
+            </select>
+
+            {{ form_label(excursionForm.location) }}
+            {{ form_widget(excursionForm.location) }}
+            {{ form_errors(excursionForm.location) }}
+
+            <label for="street">Rue</label>
+            <input id="street" value="" class="form-control" disabled="disabled" style="background-color: white">
+
+            <label for="cp">Code Postal</label>
+            <input id="cp" value="" class="form-control" disabled="disabled" style="background-color: white">
+
+            <label for="latitude">Latitude</label>
+            <input id="latitude" value="" class="form-control" disabled="disabled" style="background-color: white">
+
+            <label for="longitude">Longitude</label>
+            <input id="longitude" value="" class="form-control" disabled="disabled" style="background-color: white">
+
+        </div>
     </div>
 
-    <div>
-        {{ form_label(excursionForm.campus) }}
-        {{ form_widget(excursionForm.campus) }}
-
-        {{ form_label(excursionForm.location) }}
-        {{ form_widget(excursionForm.location) }}
-
-
-
+    <div class="d-flex justify-content-center">
+        <button type="submit" name="submit" value="create" class="btn btn-primary m-2">Enregistrer</button>
+        <button type="submit" name="submit" value="publish" class="btn btn-primary m-2">Publier la sortie</button>
+        <a href="{{ path('home') }}" class="btn btn-primary m-2">Annuler</a>
     </div>
 
-    <button class="btn-primary">Enregistrer</button>
-
-{#    {{ form_end(excursionForm) }}#}
+    {{ form_end(excursionForm) }}
 
 {% endblock %}
