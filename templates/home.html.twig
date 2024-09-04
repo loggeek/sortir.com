@@ -10,29 +10,33 @@
         <h2><i>Sorties</i></h2>
         <a href="{{ path('app_excursion_form') }}">Créer une sortie</a>
 
-        <table>
-            <tr>
-                <th>Nom de la sortie</th>
-                <th>Date de la sortie</th>
-                <th>Date de clôture</th>
-                <th>Inscrits / Places</th>
-                <th>Etat</th>
-                <th>Inscrit</th>
-                <th>Organisateur</th>
-                <th>Actions</th>
-            </tr>
-            {% for excursion in excursions %}
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td>{{ excursion.name }}</td>
-                    <td>{{ excursion.date | date }}</td>
-                    <td>{{ excursion.deadline | date }}</td>
-                    <td>{{ excursion.participants.count }} / {{ excursion.nbSeats }}</td>
-                    <td>{{ excursion.status.translate }}</td>
-                    <td>{# todo #}</td>
-                    <td>{{ excursion.organizer.name }}</td>
-                    <td>{# todo #}</td>
+                    <th scope="col">Nom de la sortie</th>
+                    <th scope="col">Date de la sortie</th>
+                    <th scope="col">Date de clôture</th>
+                    <th scope="col">Inscrits / Places</th>
+                    <th scope="col">Etat</th>
+                    <th scope="col">Inscrit</th>
+                    <th scope="col">Organisateur</th>
+                    <th scope="col">Actions</th>
                 </tr>
-            {% endfor %}
+            </thead>
+            <tbody>
+                {% for excursion in excursions %}
+                    <tr>
+                        <td>{{ excursion.name }}</td>
+                        <td>{{ excursion.date | date }}</td>
+                        <td>{{ excursion.deadline | date }}</td>
+                        <td>{{ excursion.participants.count }} / {{ excursion.nbSeats }}</td>
+                        <td>{{ excursion.status.translate }}</td>
+                        <td>{# todo: &check; si $user est inscrit #}</td>
+                        <td>{{ excursion.organizer.name }}</td>
+                        <td>{# todo: liens vers les actions #}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
         </table>
     </div>
 
