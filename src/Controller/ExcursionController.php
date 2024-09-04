@@ -34,7 +34,7 @@ class ExcursionController extends abstractController
             $em->flush();
 
 //            return $this->redirectToRoute('app_excursion_show', ['id' => $excursion->getId()]);
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('excursion/form.html.twig', [

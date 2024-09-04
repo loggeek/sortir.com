@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\CampusRepository;
 use App\Service\ExcursionService;
-use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class HomeController extends AbstractController
 {
     #[Route("/", name: "home")]
-    public function home(ExcursionService $excursionService): Response
+    public function home(ExcursionService $excursionService, CampusRepository $campusRepository): Response
     {
         if ($this->getUser() == null) {
             return $this->redirectToRoute('app_login');
@@ -20,7 +20,8 @@ class HomeController extends AbstractController
 
         return $this->render('home.html.twig', [
             'user' => $this->getUser(),
-            'excursions' => $excursionService->afficher()
+            'excursions' => $excursionService->afficher(),
+            'campus' => $campusRepository->findAll()
         ]);
     }
 }
