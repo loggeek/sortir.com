@@ -45,7 +45,7 @@
                 <label for="f-campus">Campus</label>
                 <select name="campus" id="f-campus">
                     {% for a_campus in campus %}
-                        <option value="{{ a_campus.id }}">{{ a_campus.name }}</option>
+                        <option value="{{ a_campus.id }}" {% if user.campus.id == a_campus.id %} selected {% endif %}>{{ a_campus.name }}</option>
                     {% endfor %}
                 </select>
             </li>
