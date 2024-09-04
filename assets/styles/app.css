@@ -1,3 +1,9 @@
 body {
-    background-color: skyblue;
+    margin: 0;
+    height: 100%;
+}
+h1, label{
+    font-family: "Nerko One", cursive;
+    font-weight: 400;
+    font-style: normal;
 }
