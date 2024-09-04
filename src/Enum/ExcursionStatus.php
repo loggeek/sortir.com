@@ -2,13 +2,13 @@
 
 namespace App\Enum;
 
-enum ExcursionStatus
+enum ExcursionStatus: string
 {
-    case Created;
-    case Open;
-    case Closed;
-    case Ongoing;
-    case Finished;
-    case Cancelled;
-    case Archived;
+    case Created = 'created';
+    case Open = 'open';
+    case Closed = 'closed';
+    case Ongoing = 'ongoing';
+    case Finished = 'finished';
+    case Cancelled = 'cancelled';
+    case Archived = 'archived';
 }
