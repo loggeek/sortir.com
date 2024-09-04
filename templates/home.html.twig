@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div>
+        <h1>Bienvenue `utilisateur` !</h1>
+        <p>La date est le <b>{{ "now" | date("d/m/Y") }}</b>. Il est <b>{{ "now" | date("H:i T") }}</b>.</p>
+    </div>
+
+    <div>
+        <h2><i>Sorties</i></h2>
+        <button>Créer une sortie</button>
+
+        <table>
+            <tr>
+                <th>Nom de la sortie</th>
+                <th>Date de la sortie</th>
+                <th>Date de clôture</th>
+                <th>Inscrits / Places</th>
+                <th>Etat</th>
+                <th>Inscrit</th>
+                <th>Organisateur</th>
+                <th>Actions</th>
+            </tr>
+            {% for excursion in excursions %}
+                <tr>
+                    <td>{{ excursion.name }}</td>
+                    <td>{{ excursion.date | date }}</td>
+                    <td>{{ excursion.deadline | date }}</td>
+                    <td>{{ excursion.participants.count }} / {{ excursion.nbSeats }}</td>
+                    <td>{{ excursion.status.translate }}</td>
+                    <td>{# todo #}</td>
+                    <td>{{ excursion.organizer.name }}</td>
+                    <td>{# todo #}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <div>
+        <h2><i>Filtres</i></h2>
+        <button>Appliquer</button>
+        <button>Réinitialiser</button>
+        <ul>
+            <li>
+                <label for="f-campus">Campus</label>
+                <select name="campus" id="f-campus">
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                    <option value="mercedes">Mercedes</option>
+                    <option value="audi">Audi</option>
+                </select>
+            </li>
+            <li>
+                <label for="f-excname">Rechercher la sortie</label>
+                <input type="search" id="f-excname" name="excname" placeholder="Recherche..." />
+            </li>
+            <li>
+                Dates entre <label for="f-datemin"></label><input type="date" id="f-datemin" name="datemin"> et
+                <label for="f-datemax"></label><input type="date" id="f-datemax" name="f-datemax">
+            </li>
+            <li>
+                <input type="checkbox" id="f-organizer" name="organizer" />
+                <label for="f-organizer">Uniquement les sorties que j'organise</label>
+            </li>
+            <li>
+                <input type="checkbox" id="f-participating" name="participating" />
+                <label for="f-participating">Uniquement les sorties auxquelles je participe</label>
+            </li>
+            <li>
+                <input type="checkbox" id="f-nonparticipating" name="nonparticipating" />
+                <label for="f-nonparticipating">Exclure les sorties auxquelles je participe</label>
+            </li>
+            <li>
+                <input type="checkbox" id="f-past" name="past" />
+                <label for="f-past">Afficher les sorties passées</label>
+            </li>
+        </ul>
+    </div>
+{% endblock %}
