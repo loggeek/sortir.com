@@ -1,39 +1,12 @@
 <nav>
-    <style>
-        nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: whitesmoke;
-
-        }
-
-        nav li {
-            float: left;
-        }
-
-        nav li a {
-            display: block;
-            text-align: center;
-            padding: 14px 16px;
-
-            text-decoration: none;
-            font-family: "Franklin Gothic Medium", sans-serif;
-            color: black;
-        }
-
-        nav li a:hover {
-            background-color: lightgray;
-        }
-    </style>
-
     <ul>
         {# TODO logo #}
-        <li><a href="#" style="color: darkblue">sortir.com</a></li>
+        <li><a href="/" style="color: darkblue">sortir.com</a></li>
 
-        <li style="float:right"><a href="#">Déconnexion</a></li>
+        {% if app.user %}
+        <li style="float:right"><a href="/logout">Déconnexion</a></li>
         <li style="float:right"><a href="#">Profil</a></li>
-        <li style="float:right"><a href="#">Accueil</a></li>
+        <li style="float:right"><a href="/">Accueil</a></li>
+        {% endif %}
     </ul>
 </nav>
