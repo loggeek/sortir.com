@@ -17,21 +17,40 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        // Campus
         $campus1 = new Campus();
         $campus1->setName('Rennes');
         $manager->persist($campus1);
 
+        $campus2 = new Campus();
+        $campus2->setName('Saint-Herblain');
+        $manager->persist($campus2);
+
+        // Ville
         $ville1 = new Town();
         $ville1->setName("Triffouillis-lès-Oies");
         $ville1->setZipcode("95959");
         $manager->persist($ville1);
 
+        $ville2 = new Town();
+        $ville2->setName("Perpète-les-Choux");
+        $ville2->setZipcode("12345");
+        $manager->persist($ville2);
+
+        // Lieu
         $lieu1 = new Location();
         $lieu1->setName("Machin Truc");
         $lieu1->setAddress("420 rue des Champignons");
         $lieu1->setTown($ville1);
         $manager->persist($lieu1);
 
+        $lieu2 = new Location();
+        $lieu2->setName("Carabistouilles");
+        $lieu2->setAddress("69 lieu-dit les Cornus");
+        $lieu2->setTown($ville2);
+        $manager->persist($lieu2);
+
+        // Utilisateur
         $user1 = new User();
         $user1->setCampus($campus1);
         $user1->setUsername('clovis007');
@@ -54,6 +73,7 @@ class AppFixtures extends Fixture
         $user2->setAdmin(true);
         $manager->persist($user2);
 
+        // Sortie
 //        $excursion1 = new Excursion();
 //        $excursion1->setName('Sortie Buffalo Grill');
 //        $excursion1->addParticipant($user1);
