@@ -21,6 +21,8 @@ class ExcursionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $user = $options['user'];
+
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Nom',
@@ -53,6 +55,7 @@ class ExcursionType extends AbstractType
                 'choice_label' => 'name',
                 'label' => 'Campus',
                 'required' => false,
+                'data' => $user ? $user->getCampus() : null,
             ])
             ->add('location', EntityType::class, [
                 'class' => Location::class,
@@ -68,5 +71,7 @@ class ExcursionType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Excursion::class,
         ]);
+
+        $resolver->setRequired('user');
     }
 }
