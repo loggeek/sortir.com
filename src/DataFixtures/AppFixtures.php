@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Campus;
 use App\Entity\Excursion;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -14,12 +15,15 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        $campus1 = new Campus();
+        $campus1->setName('Rennes');
 
         $user1 = new User();
         $excursion1 = new Excursion();
         $user2 = new User();
         $excursion2 = new Excursion();
 
+        $user1->setCampus($campus1);
         $user1->setUsername('clovis007');
         $user1->setName('Artman');
         $user1->setSurname('Clovis');
@@ -31,10 +35,10 @@ class AppFixtures extends Fixture
 //        $excursion1->setName('Sortie Buffalo Grill');
 //        $excursion1->addParticipant($user1);
 
-
+        $user2->setCampus($campus1);
         $user2->setUsername('dominique223');
-        $user2->setName('Dominique');
-        $user2->setSurname('PAJOT');
+        $user2->setName('Pajot');
+        $user2->setSurname('Dominique');
         $user2->setPhone('0633084112');
         $user2->setEmail('dominique.pajot2024@campus-eni.fr');
         $user2->setPassword($this->hasher->hashPassword($user2, 'admin'));
@@ -43,6 +47,8 @@ class AppFixtures extends Fixture
 //        $excursion2->setName('Sortie Patinoire LE BLIZZ');
 //        $excursion2->addParticipant($user1);
 //        $excursion2->addParticipant($user2);
+
+        $manager->persist($campus1);
 
         $manager->persist($user1);
 //        $manager->persist($excursion1);
