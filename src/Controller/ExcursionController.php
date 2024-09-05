@@ -18,9 +18,10 @@ class ExcursionController extends abstractController
     #[Route('/Excursion/form', name: 'app_excursion_form')]
     public function create(Request $request, EntityManagerInterface $em, TownRepository $townRepository): Response
     {
+        $user = $this->getUser();
 
         $excursion = new Excursion();
-        $excursionForm = $this->createForm(ExcursionType::class, $excursion);
+        $excursionForm = $this->createForm(ExcursionType::class, $excursion, ['user' => $user]);
 
         $towns = $townRepository->findAll();
 
