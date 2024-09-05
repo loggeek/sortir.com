@@ -32,7 +32,11 @@
                         <td>{{ excursion.deadline | date("d/m/Y") }}</td>
                         <td>{{ excursion.participants.count }} / {{ excursion.nbSeats }}</td>
                         <td>{{ excursion.status.translate }}</td>
-                        <td>{# todo: &check; si $user est inscrit #}</td>
+                        <td>
+                            {% if user in excursion.participants %}
+                                X
+                            {% endif %}
+                        </td>
                         <td>{{ excursion.organizer.name }}</td>
                         <td>
                             {% if excursion.status.value != 'created' %}
@@ -49,7 +53,7 @@
                             {% endif %}
 
                             {% if excursion.status.value == 'open' %}
-                                <a href="#">S'inscrir</a>
+                                <a href="#">S'inscrire</a>
                                 <a href="#">Se désinscrire</a>
                             {% endif %}
 
