@@ -43,7 +43,7 @@
             <select id="town" name="town" class="form-select">
                 <option>-- Selectionner une vile --</option>
                 {% for town in towns %}
-                    <option {{ town.id }}>{{ town.name }}</option>
+                    <option value = {{ town.id }}>{{ town.name }}</option>
                 {% endfor %}
             </select>
 
@@ -74,4 +74,64 @@
 
     {{ form_end(excursionForm) }}
 
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+            let locationsContainer = document.getElementById('excursion_location');
+            locationsContainer.disabled = true;
+
+            let villeSelector = document.getElementById('town');
+
+            if (villeSelector) {
+                villeSelector.addEventListener('change', function() {
+                    let selectedTown = villeSelector.options[villeSelector.selectedIndex].value;
+
+                    if (selectedTown) {
+                        fetch(`/api/locations/${selectedTown}`)
+                            .then(response => {
+                                if (!response.ok) {
+                                    locationsContainer.disabled = true;
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                displayLocations(data);
+                            })
+                            .catch(error => {
+                                console.error('There was a problem with the fetch operation:', error);
+                            });
+                    }
+                });
+            }
+
+            function displayLocations(locations) {
+                let locationsContainer = document.getElementById('excursion_location');
+
+                locationsContainer.innerHTML = ''; // Réinitialiser le contenu
+
+                let defaultOption = document.createElement('option');
+                defaultOption.textContent = '-- Sélectionner un lieu --';
+                defaultOption.value = '';
+                locationsContainer.appendChild(defaultOption);
+
+                if (locations.length > 0) {
+                    locationsContainer.disabled = false;
+                    locations.forEach(location => {
+                        let option = document.createElement('option');
+                        option.value = location.id; // ID du lieu
+                        option.textContent = location.name; // Nom du lieu
+                        locationsContainer.appendChild(option);
+                    });
+                } else {
+                    let noOption = document.createElement('option');
+                    noOption.textContent = 'Aucun lieu trouvé.';
+                    noOption.value = '';
+                    locationsContainer.appendChild(noOption);
+                }            }
+        });
+    </script>
+
 {% endblock %}
+
