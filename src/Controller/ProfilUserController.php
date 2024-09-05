@@ -26,13 +26,15 @@ class ProfilUserController extends AbstractController {
     public function show(int $id, UserRepository $userRepository) : Response
     {
         $user = $userRepository->find($id);
+        $myprofile = $user === $this->getUser();
 
         if ($user == null) {
             return $this->redirectToRoute('app_home');
         }
 
         return $this->render('profil_user/view.html.twig', [
-            'user' => $user
+            'user' => $user,
+            'myprofile' => $myprofile
         ]);
     }
 
