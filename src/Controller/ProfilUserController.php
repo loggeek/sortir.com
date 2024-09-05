@@ -2,10 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Form\ProfilUserType;
 use App\Repository\CampusRepository;
-use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,17 +40,21 @@ class ProfilUserController extends AbstractController {
     function edit(Request $request, UserPasswordHasherInterface $passwordHasher, CampusRepository $campusRepository, EntityManagerInterface $em): Response {
 
         $user = $this->getUser(); // Récupération de l'utilisateur actuellement connecté
-
         $form = $this->createForm(ProfilUserType::class, $user);
+
         $form->handleRequest($request);
+
 
         if($form->isSubmitted() && $form->isValid()) {
 
-            $plainPassword = $form->get('plainPassword')->getData();
 
-            // Hashage du mot de passe
-            $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
-            $user->setPassword($hashedPassword);
+            $newPassword = $form->get('password')->getData();
+
+            if($newPassword != null) {
+                // Hashage du mot de passe
+                $hashedPassword = $passwordHasher->hashPassword($user, $newPassword);
+                $user->setPassword($hashedPassword);
+            }
 
             $em->persist($user);
             $em->flush();
