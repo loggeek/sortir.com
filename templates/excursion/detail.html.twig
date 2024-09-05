@@ -23,7 +23,7 @@
             </tr>
             <tr>
                 <th scope="row">Nombre de places</th>
-                <td>{{ excursion.nb_seats }}</td>
+                <td>{{ excursion.nbSeats }}</td>
             </tr>
             <tr>
                 <th scope="row">Durée</th>
@@ -48,7 +48,7 @@
             </tr>
             <tr>
                 <th scope="row">Rue</th>
-                <td>{{ excursion.location.getAddress() }}</td>
+                <td>{{ excursion.location.address }}</td>
             </tr>
             <tr>
                 <th scope="row">Code postale</th>
@@ -66,5 +66,24 @@
     </table>
     </div>
 
+    <div class="col-4 m-3">
+        <h3>Liste des participants inscrits</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Pseudo</th>
+                    <th>Nom</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for participant in excursion.participants %}
+                    <tr>
+                        <td>{{ participant.username }}</td>
+                        <td>{{ participant.surname }} {{ participant.name }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 {% endblock %}
