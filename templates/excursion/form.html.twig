@@ -47,9 +47,19 @@
                 {% endfor %}
             </select>
 
-            {{ form_label(excursionForm.location) }}
-            {{ form_widget(excursionForm.location) }}
-            {{ form_errors(excursionForm.location) }}
+                {{ form_label(excursionForm.location) }}
+            <div class="d-flex flex-row">
+                {{ form_widget(excursionForm.location) }}
+                {{ form_errors(excursionForm.location) }}
+
+                <a href="#" class="ms-2">
+                    <span class="material-symbols-outlined" style="
+                        color: black;
+                        font-size: 2rem;
+                        font-weight: bold;
+                    ">add_circle</span>
+                </a>
+            </div>
 
             <label for="street">Rue</label>
             <input id="street" value="" class="form-control" disabled="disabled" style="background-color: white">
@@ -73,6 +83,9 @@
     </div>
 
     {{ form_end(excursionForm) }}
+
+
+
 
     <script>
 
