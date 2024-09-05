@@ -28,7 +28,7 @@ class ExcursionRepository extends ServiceEntityRepository
         $qbd = $this->createQueryBuilder('e')
             // Ne pas afficher les sorties archivées
             ->andWhere('NOT e.status = :c_archives')
-            ->setParameter('c_archives', ExcursionStatus::Archived->value);;
+            ->setParameter('c_archives', ExcursionStatus::Archived->value);
 
         if ($filter->getCampus()) {
             $qbd->andWhere('e.campus = :campus')
@@ -41,33 +41,35 @@ class ExcursionRepository extends ServiceEntityRepository
         }
         if ($filter->getDatemin()) {
             $qbd->andWhere('e.date >= :datemin')
-                ->setParameter('datemin', $filter->getDatemin()->format('Y-m-d'));
+                ->setParameter('datemin', $filter->getDatemin()->format('Y-m-d 00:00:00'));
         }
         if ($filter->getDatemax()) {
             $qbd->andWhere('e.date <= :datemax')
-                ->setParameter('datemax', $filter->getDatemax()->format('Y-m-d'));
+                ->setParameter('datemax', $filter->getDatemax()->format('Y-m-d 23:59:59'));
         }
         if ($filter->isOrganizer()) {
             $qbd->andWhere('e.organizer = :organizer')
                 ->setParameter('organizer', $user->getId());
         }
-
-        // TODO participation
-        /*
-        if ($participating) {
-            $sorties = array_filter($sorties, fn ($sortie) => in_array($user, $sortie->getParticipants()));
-        }
-        if ($nonparticipating) {
-            $sorties = array_filter($sorties, fn ($sortie) => !in_array($user, $sortie->getParticipants()));
-        }
-        */
-
         if (!$filter->isShowpast()) {
             $qbd->andWhere('NOT e.status = :c_finished')
                 ->setParameter('c_finished', ExcursionStatus::Finished->value);
         }
 
-        return $qbd->getQuery()->getResult();
+        $result = $qbd->getQuery()->getResult();
+
+        if ($filter->isParticipating()) {
+            $result = array_filter($result, function (Excursion $excursion) use ($user) {
+                return $excursion->getParticipants()->contains($user);
+            });
+        }
+        if ($filter->isNonparticipating()) {
+            $result = array_filter($result, function (Excursion $excursion) use ($user) {
+                return !$excursion->getParticipants()->contains($user);
+            });
+        }
+
+        return $result;
     }
 
 //    /**
