@@ -18,10 +18,6 @@ class HomeController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        if ($user == null) {
-            return $this->redirectToRoute('app_login');
-        }
-
         return $this->render('home.html.twig', [
             'user' => $user,
             'excursions' => $excursionRepository->findAll(), // todo filter using form
