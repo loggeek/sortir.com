@@ -22,11 +22,15 @@ class ProfilUserController extends AbstractController {
         ]);
     }
 
-//    Afficher les détails partiels d'un organisateur
-    #[Route('/profil/view', 'profil.view')]
-    public function show() : Response {
+    #[Route('/profil/view/{id}', name: 'profile_view')]
+    public function show(int $id, UserRepository $userRepository) : Response
+    {
+        $user = $userRepository->find($id);
 
-        $user = $this->getUser();
+        if ($user == null) {
+            return $this->redirectToRoute('app_home');
+        }
+
         return $this->render('profil_user/view.html.twig', [
             'user' => $user
         ]);

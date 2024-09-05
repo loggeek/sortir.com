@@ -37,11 +37,20 @@
                                 &check;
                             {% endif %}
                         </td>
-                        <td>{{ excursion.organizer.name }}</td>
+                        <td>
+                            {% if user == excursion.organizer %}
+                                {{ excursion.organizer.name }} {{ excursion.organizer.surname | first }}.
+                            {% else %}
+                                <a href="{{ path('profile_view', {'id': excursion.organizer.id}) }}">
+                                    {{ excursion.organizer.name }} {{ excursion.organizer.surname | first }}.
+                                </a>
+                            {% endif %}
+                        </td>
                         <td>
                             {% if excursion.status.value != 'created' %}
                                 <a href="{{ path('app_excursion_detail', { 'id': excursion.id }) }}">Afficher</a>
                             {% endif %}
+
                             {% if excursion.organizer.id == user.id %}
                                 {% if excursion.status.value == 'created' %}
                                     <a href="#">Modifier</a>
