@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title "Profil de " ~ user.name %}
+{% block title "Profil" %}
 
 {% block body %}
 
@@ -13,7 +13,19 @@
             </div>
 
             <div class=" infos col-md-7">
-                {{ form(form) }}
+                {{ form_start(form) }}
+                {{ form_row(form.username) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.surname) }}
+                {{ form_row(form.phone) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.plainPassword.first) }}
+                {{ form_row(form.plainPassword.second) }}
+                {{ form_row(form.campus) }}
+
+                /** TODO Traiter l'ajout de la photo de profile **/
+
+                {{ form_end(form) }}
             </div>
         </div>
         <section class='row text-center mt-4'>
