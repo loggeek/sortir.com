@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détail de l'excursion{% endblock %}
+{% block title %}Détail de la sortie{% endblock %}
 {% block body %}
 
     <h2 class="text-center">Afficher une sortie</h2>
@@ -51,7 +51,7 @@
                 <td>{{ excursion.location.address }}</td>
             </tr>
             <tr>
-                <th scope="row">Code postale</th>
+                <th scope="row">Code postal</th>
                 <td>{{ excursion.location.town.zipcode }}</td>
             </tr>
             <tr>
