@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Entity\Excursion;
 use App\Enum\ExcursionStatus;
 use App\Form\ExcursionType;
+use App\Repository\LocationRepository;
 use App\Repository\TownRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -75,5 +77,20 @@ class ExcursionController extends abstractController
         return $this->render('excursion/detail.html.twig', [
             'excursion' => $excursion,
         ]);
+    }
+
+    #[Route("/api/locations/{townId}", name:"api_locations", methods: ['GET'])]
+    public function getLocations(int $townId, LocationRepository $locationRepository): JsonResponse
+    {
+        $locations = $locationRepository->findBy(['town' => $townId]);
+
+        $data = array_map(function($location) {
+            return [
+                'id' => $location->getId(),
+                'name' => $location->getName(),
+            ];
+        }, $locations);
+
+        return new JsonResponse($data);
     }
 }
