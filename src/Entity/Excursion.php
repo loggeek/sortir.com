@@ -31,15 +31,15 @@ class Excursion
     private ?\DateTimeInterface $deadline = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message: 'Le nombre de sièges n\'est pas valide')]
+    #[Assert\NotBlank(message: 'Le nombre de places n\'est pas valide')]
     private ?int $nb_seats = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\NotBlank(message: 'La durée de sièges n\'est pas valide')]
+    #[Assert\NotBlank(message: 'La durée n\'est pas valide')]
     private ?int $duration = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\NotBlank(message: 'La description de sièges n\'est pas valide')]
+    #[Assert\NotBlank(message: 'La description n\'est pas valide')]
     private ?string $description = null;
 
     #[ORM\Column(type: 'string', enumType: ExcursionStatus::class)]
