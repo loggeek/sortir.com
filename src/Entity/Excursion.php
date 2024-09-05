@@ -112,12 +112,12 @@ class Excursion
         return $this;
     }
 
-    public function getNb_Seats(): ?int
+    public function getNbSeats(): ?int
     {
         return $this->nb_seats;
     }
 
-    public function setNb_Seats(int $nb_seats): static
+    public function setNbSeats(int $nb_seats): static
     {
         $this->nb_seats = $nb_seats;
 
