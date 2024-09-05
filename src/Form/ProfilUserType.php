@@ -2,16 +2,21 @@
 
 namespace App\Form;
 
+use App\Entity\Campus;
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ProfilUserType extends AbstractType
 {
@@ -33,17 +38,35 @@ class ProfilUserType extends AbstractType
             ->add('email',  EmailType::class, [
                 'label' => 'Email : '
             ])
-            ->add('password',  PasswordType::class, [
-                'label' => 'Mot de passe : '
+            ->add('plainPassword', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'first_options'  => [
+                    'label' => 'Mot de passe : ',
+                ],
+                'second_options' => [
+                    'label' => 'Confirmation : ', // Ce champ de confirmation n'est pas directement mappé à l'entité "User"
+                ],
+                'invalid_message' => 'Les deux mots de passe doivent être identiques',
+                'mapped' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Veuillez renseigner le nouveau mot de passe',
+                    ]),
+                    new Length([
+                        'min' => 5,
+                        'minMessage' => ' Votre mot de passe doit contenir au moins {{ limit }} caractères',
+                        'max' => 4096,
+                    ]),
+                ],
             ])
+            ->add('campus', EntityType::class, [
+                    'class' => Campus::class,
+                    'choice_label' => 'name',
+                    'label' => 'Campus',
+                    'required' => false,
+                ]
 
-            ->add('save', SubmitType::class, [
-                'label' => "Enregistrer"
-            ])
-            ->add('cancel', ResetType::class, [
-                'label' => 'Annuler'
-            ])
-        ;
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

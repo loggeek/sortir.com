@@ -52,8 +52,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToMany(targetEntity: Excursion::class, mappedBy: 'participants')]
     private Collection $excursions_participating;
 
-    #[ORM\ManyToOne(inversedBy: 'users')]
+    #[ORM\ManyToOne(targetEntity: Campus::class, inversedBy: 'etudiants')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Campus $campus = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $profileImage = null;
 
     public function __construct()
     {
@@ -236,6 +240,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->campus = $campus;
 
+        return $this;
+    }
+
+    public function getProfileImage(): ?string
+    {
+        return $this->profileImage;
+    }
+
+    public function setProfileImage(?string $profileImage): self
+    {
+        $this->profileImage = $profileImage;
         return $this;
     }
 }

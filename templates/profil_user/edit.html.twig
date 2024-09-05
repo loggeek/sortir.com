@@ -1,11 +1,39 @@
 {% extends 'base.html.twig' %}
 
-{% block title "Profil de " ~ user.name %}
+{% block title "Profil" %}
 
 {% block body %}
 
-    <h2>Profil de {{ user.name }}</h2>
+    <h2 class="text-center m-5">Mon profil</h2>
+    <div class="container">
 
-    {{ form(form) }}
+        <div class="row">
+            <div class=" logo col-md-3">
+                <img src="https://images.pexels.com/photos/100582/pexels-photo-100582.jpeg?cs=srgb&dl=pexels-philipp-m-100582.jpg&fm=jpg" class="p-1 bg-dark" alt="" id="video" width="130" height="150" />
+            </div>
+
+            <div class=" infos col-md-7">
+                {{ form_start(form) }}
+                {{ form_row(form.username) }}
+                {{ form_row(form.name) }}
+                {{ form_row(form.surname) }}
+                {{ form_row(form.phone) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.plainPassword.first) }}
+                {{ form_row(form.plainPassword.second) }}
+                {{ form_row(form.campus) }}
+
+                /** TODO Traiter l'ajout de la photo de profile **/
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+        <section class='row text-center mt-4'>
+            <div class='col center'>
+                <button type="submit" class='btn btn-primary btn-lg'>Enregistrer</button>
+                <a href="../home" class='btn btn-danger btn-lg'>Annuler</a>
+            </div>
+        </section>
+    </div>
 
 {%  endblock %}
