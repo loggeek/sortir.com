@@ -41,7 +41,7 @@
 
             <label for="town">Ville</label>
             <select id="town" name="town" class="form-select">
-                <option>-- Selectionner une vile --</option>
+                <option>-- Selectionner une ville --</option>
                 {% for town in towns %}
                     <option value = {{ town.id }}>{{ town.name }}</option>
                 {% endfor %}
