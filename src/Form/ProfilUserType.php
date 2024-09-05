@@ -39,7 +39,8 @@ class ProfilUserType extends AbstractType
             ->add('password', RepeatedType::class, [
 
                 'type' => PasswordType::class,
-                    'required' => false,
+
+                'required' => false,
 
                 'first_options'  => [
                     'label' => 'Mot de passe : ',
@@ -51,16 +52,16 @@ class ProfilUserType extends AbstractType
 
                 'mapped' => false,
 
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez renseigner le nouveau mot de passe',
-                    ]),
-                    new Length([
-                        'min' => 5,
-                        'minMessage' => ' Votre mot de passe doit contenir au moins {{ limit }} caractères',
-                        'max' => 4096,
-                    ]),
-                ],
+//                'constraints' => [
+//                    new NotBlank([
+//                        'message' => 'Veuillez renseigner le nouveau mot de passe',
+//                    ]),
+//                    new Length([
+//                        'min' => 5,
+//                        'minMessage' => ' Votre mot de passe doit contenir au moins {{ limit }} caractères',
+//                        'max' => 4096,
+//                    ]),
+//                ],
             ])
             ->add('campus', EntityType::class, [
                     'class' => Campus::class,
