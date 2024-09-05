@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class ExcursionController extends abstractController
 {
-    #[Route('/Excursion/form', name: 'app_excursion_form')]
+    #[Route('/excursion/form', name: 'app_excursion_form')]
     public function create(Request $request, EntityManagerInterface $em, TownRepository $townRepository): Response
     {
         $user = $this->getUser();
