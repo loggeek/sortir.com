@@ -8,7 +8,7 @@
         <ul class="navbar-nav">
             {% if app.user %}
                 <li class="nav-item d-flex me-2"><a class="nav-link" href="{{ path('app_home') }}">Accueil</a></li>
-                <li class="nav-item d-flex me-2"><a class="nav-link" href="#">Profil</a></li>
+                <li class="nav-item d-flex me-2"><a class="nav-link" href="{{ path('profil.edit') }}">Profil</a></li>
                 <li class="nav-item d-flex me-2"><a class="nav-link text-danger" href="{{ path('app_logout') }}">Déconnexion</a></li>
             {% endif %}
         </ul>
