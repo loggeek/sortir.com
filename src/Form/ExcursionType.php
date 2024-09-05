@@ -10,6 +10,8 @@ use App\Enum\ExcursionStatus;
 use Doctrine\DBAL\Types\StringType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -28,13 +30,12 @@ class ExcursionType extends AbstractType
                 'label' => 'Nom',
                 'required' => false,
                 ])
-            ->add('date', null, [
-                'widget' => 'single_text',
+            ->add('date', DateTimeType::class, [
                 'label' => 'Date',
+                'view_timezone' => 'Europe/Paris',
                 'required' => false,
             ])
-            ->add('deadline', null, [
-                'widget' => 'single_text',
+            ->add('deadline', DateType::class, [
                 'label' => 'Date limite d\'inscription',
                 'required' => false,
             ])
