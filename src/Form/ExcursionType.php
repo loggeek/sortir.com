@@ -54,7 +54,6 @@ class ExcursionType extends AbstractType
                 'class' => Campus::class,
                 'choice_label' => 'name',
                 'label' => 'Campus',
-                'required' => false,
                 'data' => $user ? $user->getCampus() : null,
             ])
             ->add('location', EntityType::class, [
