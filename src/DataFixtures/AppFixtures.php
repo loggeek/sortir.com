@@ -7,6 +7,7 @@ use App\Entity\Excursion;
 use App\Entity\Location;
 use App\Entity\Town;
 use App\Entity\User;
+use App\Enum\ExcursionStatus;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -17,53 +18,117 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        // Campus
         $campus1 = new Campus();
         $campus1->setName('Rennes');
         $manager->persist($campus1);
 
+        $campus2 = new Campus();
+        $campus2->setName('Saint-Herblain');
+        $manager->persist($campus2);
+
+        // Ville
         $ville1 = new Town();
         $ville1->setName("Triffouillis-lès-Oies");
         $ville1->setZipcode("95959");
         $manager->persist($ville1);
 
+        $ville2 = new Town();
+        $ville2->setName("Perpète-les-Choux");
+        $ville2->setZipcode("12345");
+        $manager->persist($ville2);
+
+        // Lieu
         $lieu1 = new Location();
         $lieu1->setName("Machin Truc");
         $lieu1->setAddress("420 rue des Champignons");
         $lieu1->setTown($ville1);
         $manager->persist($lieu1);
 
+        $lieu2 = new Location();
+        $lieu2->setName("Carabistouilles");
+        $lieu2->setAddress("69 lieu-dit les Cornus");
+        $lieu2->setTown($ville2);
+        $manager->persist($lieu2);
+
+        // Utilisateur
         $user1 = new User();
         $user1->setCampus($campus1);
-        $user1->setUsername('clovis007');
-        $user1->setName('Artman');
-        $user1->setSurname('Clovis');
+        $user1->setUsername('Vince');
+        $user1->setName('Bond');
+        $user1->setSurname('Vince');
         $user1->setPhone('0725132967');
-        $user1->setEmail('clovis.artman2024@campus-eni.fr');
-        $user1->setPassword($this->hasher->hashPassword($user1, 'admin'));
+        $user1->setEmail('vince@campus-eni.fr');
+        $user1->setPassword($this->hasher->hashPassword($user1, '111111'));
         $user1->setAdmin(false);
         $manager->persist($user1);
 
         $user2 = new User();
         $user2->setCampus($campus1);
-        $user2->setUsername('dominique223');
+        $user2->setUsername('Logan');
         $user2->setName('Pajot');
         $user2->setSurname('Dominique');
         $user2->setPhone('0633084112');
         $user2->setEmail('dominique.pajot2024@campus-eni.fr');
-        $user2->setPassword($this->hasher->hashPassword($user2, 'admin'));
+        $user2->setPassword($this->hasher->hashPassword($user2, '222222'));
         $user2->setAdmin(true);
         $manager->persist($user2);
 
-//        $excursion1 = new Excursion();
-//        $excursion1->setName('Sortie Buffalo Grill');
-//        $excursion1->addParticipant($user1);
-//        $manager->persist($excursion1);
+        $user3 = new User();
+        $user3->setCampus($campus1);
+        $user3->setUsername('Andrick');
+        $user3->setName('Hanks');
+        $user3->setSurname('Tom');
+        $user3->setPhone('0633084112');
+        $user3->setEmail('dominique.pajot2024@campus-eni.fr');
+        $user3->setPassword($this->hasher->hashPassword($user3, '333333'));
+        $user3->setAdmin(true);
+        $manager->persist($user3);
 
-//        $excursion2 = new Excursion();
-//        $excursion2->setName('Sortie Patinoire LE BLIZZ');
-//        $excursion2->addParticipant($user1);
-//        $excursion2->addParticipant($user2);
-//        $manager->persist($excursion2);
+        // Sortie
+        $excursion1 = new Excursion();
+        $excursion1->setName('Sortie Buffalo Grill');
+        $excursion1->setOrganizer($user1);
+        $excursion1->setCampus($campus1);
+        $excursion1->setLocation($lieu1);
+        $excursion1->setDate(new \DateTime());
+        $excursion1->setDeadline(new \DateTime());
+        $excursion1->setNbSeats(8);
+        $excursion1->setDuration(120);
+        $excursion1->setDescription('Une bonne entrecote');
+        $excursion1->setStatus(ExcursionStatus::Created);
+        $manager->persist($excursion1);
+
+        $excursion2 = new Excursion();
+        $excursion2->setName('Sortie piscine');
+        $excursion2->setOrganizer($user1);
+        $excursion2->setCampus($campus1);
+        $excursion2->setLocation($lieu2);
+        $excursion2->setDate(new \DateTime());
+        $excursion2->setDeadline(new \DateTime());
+        $excursion2->setNbSeats(8);
+        $excursion2->setDuration(120);
+        $excursion2->setDescription('Un peu de natation');
+        $excursion2->setStatus(ExcursionStatus::Open);
+        $excursion2->addParticipant($user2);
+        $excursion2->addParticipant($user3);
+        $manager->persist($excursion2);
+
+        $excursion3 = new Excursion();
+        $excursion3->setName('Patinoire');
+        $excursion3->setOrganizer($user1);
+        $excursion3->setCampus($campus1);
+        $excursion3->setLocation($lieu1);
+        $excursion3->setDate(new \DateTime());
+        $excursion3->setDeadline(new \DateTime());
+        $excursion3->setNbSeats(8);
+        $excursion3->setDuration(120);
+        $excursion3->setDescription('Un peu de glisse');
+        $excursion3->setStatus(ExcursionStatus::Ongoing);
+        $excursion3->addParticipant($user2);
+        $excursion3->addParticipant($user3);
+        $manager->persist($excursion3);
+
 
         $manager->flush();
     }

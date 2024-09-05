@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Création d'une sorite{% endblock %}
+{% block title %}Création d'une sortie{% endblock %}
 {% block body %}
 
     <h2 class="text-center">Créer une sortie</h2>
@@ -41,15 +41,25 @@
 
             <label for="town">Ville</label>
             <select id="town" name="town" class="form-select">
-                <option>-- Selectionner une vile --</option>
+                <option>-- Selectionner une ville --</option>
                 {% for town in towns %}
-                    <option {{ town.id }}>{{ town.name }}</option>
+                    <option value = {{ town.id }}>{{ town.name }}</option>
                 {% endfor %}
             </select>
 
-            {{ form_label(excursionForm.location) }}
-            {{ form_widget(excursionForm.location) }}
-            {{ form_errors(excursionForm.location) }}
+                {{ form_label(excursionForm.location) }}
+            <div class="d-flex flex-row">
+                {{ form_widget(excursionForm.location) }}
+                {{ form_errors(excursionForm.location) }}
+
+                <a href="#" class="ms-2">
+                    <span class="material-symbols-outlined" style="
+                        color: black;
+                        font-size: 2rem;
+                        font-weight: bold;
+                    ">add_circle</span>
+                </a>
+            </div>
 
             <label for="street">Rue</label>
             <input id="street" value="" class="form-control" disabled="disabled" style="background-color: white">
@@ -74,4 +84,67 @@
 
     {{ form_end(excursionForm) }}
 
+
+
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+            let locationsContainer = document.getElementById('excursion_location');
+            locationsContainer.disabled = true;
+
+            let villeSelector = document.getElementById('town');
+
+            if (villeSelector) {
+                villeSelector.addEventListener('change', function() {
+                    let selectedTown = villeSelector.options[villeSelector.selectedIndex].value;
+
+                    if (selectedTown) {
+                        fetch(`/api/locations/${selectedTown}`)
+                            .then(response => {
+                                if (!response.ok) {
+                                    locationsContainer.disabled = true;
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                displayLocations(data);
+                            })
+                            .catch(error => {
+                                console.error('There was a problem with the fetch operation:', error);
+                            });
+                    }
+                });
+            }
+
+            function displayLocations(locations) {
+                let locationsContainer = document.getElementById('excursion_location');
+
+                locationsContainer.innerHTML = ''; // Réinitialiser le contenu
+
+                let defaultOption = document.createElement('option');
+                defaultOption.textContent = '-- Sélectionner un lieu --';
+                defaultOption.value = '';
+                locationsContainer.appendChild(defaultOption);
+
+                if (locations.length > 0) {
+                    locationsContainer.disabled = false;
+                    locations.forEach(location => {
+                        let option = document.createElement('option');
+                        option.value = location.id; // ID du lieu
+                        option.textContent = location.name; // Nom du lieu
+                        locationsContainer.appendChild(option);
+                    });
+                } else {
+                    let noOption = document.createElement('option');
+                    noOption.textContent = 'Aucun lieu trouvé.';
+                    noOption.value = '';
+                    locationsContainer.appendChild(noOption);
+                }            }
+        });
+    </script>
+
 {% endblock %}
+

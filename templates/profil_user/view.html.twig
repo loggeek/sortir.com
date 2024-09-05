@@ -9,17 +9,20 @@
         <div class="logo"></div>
         <div class="infos">
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">{{ user.name }}</li>
-                <li class="list-group-item">{{ user.surname }}</li>
-                <li class="list-group-item">{{ user.phone }}</li>
-                <li class="list-group-item">{{ user.email }}</li>
-{#                <li class="list-group-item">{{ user.campus.name }}</li>#}
+                <li class="list-group-item">{{ user.surname }} {{ user.name }}</li>
+                <li class="list-group-item"><label>Téléphone :</label> {{ user.phone }}</li>
+                <li class="list-group-item"><label>E-mail :</label> {{ user.email }}</li>
+                <li class="list-group-item"><label>Campus :</label> {{ user.campus.name }}</li>
             </ul>
         </div>
     </div>
 
     <div class="d-flex justify-content-center">
-        <button type="submit" class="btn btn-success">Editer</button>
+        {% if myprofile %}
+            <a href="{{ path('profil.edit') }}" class="btn btn-primary">Modifier</a>
+        {% else %}
+            <a href="{{ path('app_home') }}" class="btn btn-secondary">Retour</a>
+        {% endif %}
     </div>
 
 {% endblock %}
