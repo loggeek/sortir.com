@@ -44,8 +44,10 @@ class ProfilUserController extends AbstractController {
     function edit(Request $request, UserPasswordHasherInterface $passwordHasher, CampusRepository $campusRepository, EntityManagerInterface $em, SluggerInterface $slugger): Response {
 
         $user = $this->getUser(); // Récupération de l'utilisateur actuellement connecté
-        $form = $this->createForm(ProfilUserType::class, $user);
+        $originalProfileImage = $user->getProfileImage(); // Sauvegarde l'image actuelle
 
+
+        $form = $this->createForm(ProfilUserType::class, $user);
         $form->handleRequest($request);
 
 
@@ -53,9 +55,9 @@ class ProfilUserController extends AbstractController {
 
 
             $newPassword = $form->get('password')->getData();
-
             /** @var UploadedFile $file */
             $file = $form->get('profileImage')->getData();
+
 
             if($newPassword != null) {
                 // Hashage du mot de passe
@@ -77,6 +79,9 @@ class ProfilUserController extends AbstractController {
                 } catch (FileException $e) {}
 
                 $user->setProfileImage($newFilename);
+            } else {
+                // On garde l'image du profile en cours si pas de modification de l'image de profile
+                $user->setProfileImage($originalProfileImage);
             }
 
             $em->persist($user);
