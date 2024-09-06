@@ -111,7 +111,8 @@
                                 return response.json();
                             })
                             .then(data => {
-                                displayLocations(data);
+                                displayLocations(data['locations']);
+                                displayCP(data['town']);
                             })
                             .catch(error => {
                                 console.error('There was a problem with the fetch operation:', error);
@@ -145,6 +146,12 @@
                     locationsContainer.appendChild(noOption);
                 }
             }
+
+            function displayCP(town) {
+                let cpContainer = document.getElementById('cp');
+                cpContainer.value = town.zipcode;
+            }
+
         });
     </script>
 
