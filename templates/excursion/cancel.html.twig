@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail de la sortie{% endblock %}
+{% block body %}
+
+    <h2 class="text-center">Afficher une sortie</h2>
+
+    {{ form_start(cancelForm) }}
+
+    <label for="name">Nom de la sortie</label>
+    <input id="name" value="{{ excursion.name }}" class="form-control" disabled="disabled"
+           style="background-color: white">
+
+    <label for="date">Date et heure de la sortie</label>
+    <input id="date" value="{{ excursion.date|date('D d M Y (H:i)') }}" class="form-control" disabled="disabled"
+           style="background-color: white">
+
+    <label for="campus">Campus</label>
+    <input id="campus" value="{{ excursion.campus.name }}" class="form-control" disabled="disabled"
+           style="background-color: white">
+
+    <label for="location">Lieu</label>
+    <input id="location" value="{{ excursion.location.name }}" class="form-control" disabled="disabled"
+           style="background-color: white">
+
+    {{ form_label(cancelForm.motif) }}
+    {{ form_widget(cancelForm.motif) }}
+    {{ form_errors(cancelForm.motif) }}
+
+    <div class="d-flex justify-content-center m-3">
+        <button type="submit" class="btn btn-primary m-2">Enregistrer</button>
+        <a href="{{ path('app_home') }}" class="btn btn-danger m-2">Annuler</a>
+    </div>
+
+    {{ form_end(cancelForm) }}
+
+{% endblock %}

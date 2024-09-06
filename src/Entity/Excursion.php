@@ -64,6 +64,9 @@ class Excursion
     #[Assert\NotBlank(message: 'Le lieu n\'est pas valide')]
     private ?Location $location = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $cancelReason = null;
+
     public function __construct()
     {
         $this->participants = new ArrayCollection();
@@ -216,6 +219,18 @@ class Excursion
     public function setLocation(?Location $location): static
     {
         $this->location = $location;
+
+        return $this;
+    }
+
+    public function getCancelReason(): ?string
+    {
+        return $this->cancelReason;
+    }
+
+    public function setCancelReason(?string $cancelReason): static
+    {
+        $this->cancelReason = $cancelReason;
 
         return $this;
     }
