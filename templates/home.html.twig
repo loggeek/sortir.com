@@ -9,8 +9,7 @@
 
     <div>
         <h2>Sorties</h2>
-        <a href="{{ path('app_excursion_form') }}" class="btn btn-outline-primary">Créer une sortie</a>
-
+        <a href="{{ path('app_excursion_form') }}" class="btn btn-primary">Créer une sortie</a>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -48,16 +47,16 @@
                     </td>
                     <td>
                         {% if excursion.status.value != 'created' %}
-                            <a href="{{ path('app_excursion_detail', { 'id': excursion.id }) }}">Afficher</a>
+                            <a class="badge bg-secondary" href="{{ path('app_excursion_detail', { 'id': excursion.id }) }}">Afficher</a>
                         {% endif %}
 
                         {% if excursion.organizer.id == user.id %}
                             {% if excursion.status.value == 'created' %}
-                                <a href="#">Modifier</a>
-                                <a href="#">Publier</a>
+                                <a class="badge bg-secondary" href="#">Modifier</a>
+                                <a class="badge bg-success" href="#">Publier</a>
                             {% endif %}
                             {% if excursion.status.value != 'created' %}
-                                <a href="#">Annuler</a>
+                                <a class="badge bg-danger" href="#">Annuler</a>
                             {% endif %}
                         {% endif %}
 
@@ -73,9 +72,9 @@
                             {% endfor %}
 
                             {% if inscrit == 0 %}
-                                <a href="{{ path('app_excursion_inscription', { 'id': excursion.id }) }}">S'inscrire</a>
+                                <a class="badge bg-primary" href="{{ path('app_excursion_inscription', { 'id': excursion.id }) }}">S'inscrire</a>
                             {% else %}
-                                <a href="{{ path('app_excursion_desinscription', { 'id': excursion.id }) }}">Se désinscrire</a>
+                                <a class="badge bg-danger" href="{{ path('app_excursion_desinscription', { 'id': excursion.id }) }}">Se désinscrire</a>
                             {% endif %}
 
                         {% endif %}
@@ -122,8 +121,8 @@
         {{ form_widget(filterForm.showpast) }}
         {{ form_errors(filterForm.showpast) }}
 
-        <button type="submit" class="btn btn-primary m-1">Appliquer</button>
-        <a href="{{ path('app_home') }}" class="btn btn-primary m-1">Réinitialiser</a>
+        <button type="submit" class="btn btn-sm btn-primary m-1">Appliquer</button>
+        <a href="{{ path('app_home') }}" class="btn btn-sm btn-danger m-1">Réinitialiser</a>
 
         {{ form_end(filterForm) }}
     </div>
