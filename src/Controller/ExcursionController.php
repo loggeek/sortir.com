@@ -6,6 +6,7 @@ use App\Entity\Excursion;
 use App\Entity\User;
 use App\Enum\ExcursionStatus;
 use App\Form\ExcursionCancelType;
+use App\Form\ExcursionModifyType;
 use App\Form\ExcursionType;
 use App\Repository\LocationRepository;
 use App\Repository\TownRepository;
@@ -41,9 +42,11 @@ class ExcursionController extends abstractController
                 switch ($buttonClicked) {
                     case 'create':
                         $excursion->setStatus(ExcursionStatus::Created);
+                        $message = 'Sortie créée';
                         break;
                     case 'publish':
                         $excursion->setStatus(ExcursionStatus::Open);
+                        $message = 'Sortie publiée';
                         break;
                 }
 
@@ -52,7 +55,7 @@ class ExcursionController extends abstractController
                 $em->persist($excursion);
                 $em->flush();
 
-                $this->addFlash('success', "Sortie créée");
+                $this->addFlash('success', $message);
                 return $this->redirectToRoute('app_home');
             } else {
                 $this->addFlash('danger', "Formulaire invalide");
@@ -62,6 +65,7 @@ class ExcursionController extends abstractController
         return $this->render('excursion/form.html.twig', [
             'excursionForm' => $excursionForm->createView(),
             'towns' => $towns,
+            'modifie' => false,
         ]);
 
     }
@@ -96,6 +100,7 @@ class ExcursionController extends abstractController
             $em->persist($excursion);
             $em->flush();
 
+            $this->addFlash('success', 'Sortie annulée');
             return $this->redirectToRoute('app_home');
         }
 
@@ -103,8 +108,7 @@ class ExcursionController extends abstractController
             'cancelForm' => $cancelForm->createView(),]);
     }
 
-    #[
-        Route('/excursion/{id}/publier', name: 'app_excursion_publish')]
+    #[Route('/excursion/{id}/publier', name: 'app_excursion_publish')]
     public function publish($id, EntityManagerInterface $em): Response
     {
         $excursion = $em->getRepository(Excursion::class)->find($id);
@@ -117,9 +121,8 @@ class ExcursionController extends abstractController
             $em->flush();
         }
 
-        return $this->render('excursion/detail.html.twig', [
-            'excursion' => $excursion,
-        ]);
+        $this->addFlash('success', 'Sortie publiée');
+        return $this->redirectToRoute('app_home');
     }
 
     #[Route('/excursion/{id}/inscription', name: 'app_excursion_inscription')]
@@ -137,9 +140,8 @@ class ExcursionController extends abstractController
             $em->flush();
         }
 
-        return $this->render('excursion/detail.html.twig', [
-            'excursion' => $excursion,
-        ]);
+        $this->addFlash('success', 'Vous êtes inscrit(e)');
+        return $this->redirectToRoute('app_home');
     }
 
     #[Route('/excursion/{id}/desinscription', name: 'app_excursion_desinscription')]
@@ -157,9 +159,8 @@ class ExcursionController extends abstractController
             $em->flush();
         }
 
-        return $this->render('excursion/detail.html.twig', [
-            'excursion' => $excursion,
-        ]);
+        $this->addFlash('success', 'Vous êtes désinscrit(e)');
+        return $this->redirectToRoute('app_home');
     }
 
     #[Route("/api/locations/{townId}", name: "api_locations", methods: ['GET'])]
@@ -176,4 +177,61 @@ class ExcursionController extends abstractController
 
         return new JsonResponse($data);
     }
+
+
+
+    #[Route('/excursion/{id}/modifier', name: 'app_excursion_modifier')]
+    public function modifier($id, Request $request, EntityManagerInterface $em, TownRepository $townRepository): Response
+    {
+        $user = $this->getUser();
+        $towns = $townRepository->findAll();
+
+        $excursion = $em->getRepository(Excursion::class)->find($id);
+        $excursionForm = $this->createForm(ExcursionModifyType::class, $excursion, ['user' => $user]);
+
+        $excursionForm->handleRequest($request);
+
+        if ($excursionForm->isSubmitted()) {
+            $buttonClicked = $request->request->get('submit');
+
+            if ($excursionForm->isValid()) {
+
+                $excursion = $excursionForm->getData();
+
+                switch ($buttonClicked) {
+                    case 'create':
+                        $excursion->setStatus(ExcursionStatus::Created);
+                        $message = 'Sortie créée';
+                        break;
+                    case 'publish':
+                        $excursion->setStatus(ExcursionStatus::Open);
+                        $message = 'Sortie publiée';
+                        break;
+                    case 'delete':
+                        $em->remove($excursion);
+                        $em->flush();
+                        $this->addFlash('success', 'Sorite supprimée');
+                        return $this->redirectToRoute('app_home');
+                }
+
+                $excursion->setOrganizer($this->getUser());
+                $excursion->addParticipant($this->getUser());
+                $em->persist($excursion);
+                $em->flush();
+
+                $this->addFlash('success', $message);
+                return $this->redirectToRoute('app_home');
+            } else {
+                $this->addFlash('danger', "Formulaire invalide");
+            }
+        }
+
+        return $this->render('excursion/form.html.twig', [
+            'excursionForm' => $excursionForm->createView(),
+            'towns' => $towns,
+            'modifie' => true,
+        ]);
+
+    }
+
 }

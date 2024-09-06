@@ -1,5 +1,17 @@
 {% for type, messages in app.flashes %}
-    <div class="text-center alert alert-{{ type }}">
+    <div class="text-center alert alert-{{ type }}" id="flashDiv">
         {{ messages | join('. ') }}
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            let flashDiv = document.getElementById('flashDiv');
+
+            setTimeout(() => {
+                flashDiv.style.display = 'none';
+            }, 3000);
+        })
+    </script>
+
 {% endfor %}

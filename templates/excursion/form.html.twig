@@ -43,11 +43,11 @@
             <select id="town" name="town" class="form-select">
                 <option>-- Selectionner une ville --</option>
                 {% for town in towns %}
-                    <option value = {{ town.id }}>{{ town.name }}</option>
+                    <option value= {{ town.id }}>{{ town.name }}</option>
                 {% endfor %}
             </select>
 
-                {{ form_label(excursionForm.location) }}
+            {{ form_label(excursionForm.location) }}
             <div class="d-flex flex-row">
                 {{ form_widget(excursionForm.location) }}
                 {{ form_errors(excursionForm.location) }}
@@ -79,6 +79,9 @@
     <div class="d-flex justify-content-center">
         <button type="submit" name="submit" value="create" class="btn btn-primary m-2">Enregistrer</button>
         <button type="submit" name="submit" value="publish" class="btn btn-success m-2">Publier la sortie</button>
+        {% if modifie %}
+            <button type="submit" name="submit" value="delete" class="btn btn-danger m-2">Supprimer la sortie</button>
+        {% endif %}
         <a href="{{ path('app_home') }}" class="btn btn-danger m-2">Annuler</a>
     </div>
 
@@ -87,7 +90,7 @@
 
     <script>
 
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
 
             let locationsContainer = document.getElementById('excursion_location');
             locationsContainer.disabled = true;
@@ -95,7 +98,7 @@
             let villeSelector = document.getElementById('town');
 
             if (villeSelector) {
-                villeSelector.addEventListener('change', function() {
+                villeSelector.addEventListener('change', function () {
                     let selectedTown = villeSelector.options[villeSelector.selectedIndex].value;
 
                     if (selectedTown) {
@@ -140,7 +143,8 @@
                     noOption.textContent = 'Aucun lieu trouvé.';
                     noOption.value = '';
                     locationsContainer.appendChild(noOption);
-                }            }
+                }
+            }
         });
     </script>
 
