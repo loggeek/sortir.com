@@ -2,11 +2,12 @@
 
 {% block title %}Détail de la sortie{% endblock %}
 {% block body %}
-
-    <h2 class="text-center">Afficher une sortie</h2>
+    <div class="text-center">
+        <h2>Afficher une sortie</h2>
+        <label>Statut :</label> {{ excursion.status.translate }}
+    </div>
 
     <div class="d-flex flex-row m-3">
-
         <table class="table">
             <tbody>
             <tr>
