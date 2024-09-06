@@ -55,8 +55,8 @@
                                 <a class="badge bg-secondary" href="#">Modifier</a>
                                 <a class="badge bg-success" href="{{ path('app_excursion_publish', { 'id': excursion.id }) }}">Publier</a>
                             {% endif %}
-                            {% if excursion.status.value != 'created' %}
-                                <a class="badge bg-danger" href="#">Annuler</a>
+                            {% if excursion.status.value != 'created' and excursion.status.value != 'cancelled' %}
+                                <a class="badge bg-danger" href="{{ path('app_excursion_cancel', { 'id': excursion.id }) }}">Annuler</a>
                             {% endif %}
                         {% endif %}
 
