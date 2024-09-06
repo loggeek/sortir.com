@@ -42,12 +42,16 @@ class AppFixtures extends Fixture
         $lieu1 = new Location();
         $lieu1->setName("Machin Truc");
         $lieu1->setAddress("420 rue des Champignons");
+        $lieu1->setLatitude("48.620583");
+        $lieu1->setLongitude("-1.993267");
         $lieu1->setTown($ville1);
         $manager->persist($lieu1);
 
         $lieu2 = new Location();
         $lieu2->setName("Carabistouilles");
         $lieu2->setAddress("69 lieu-dit les Cornus");
+        $lieu2->setLatitude("48.620583");
+        $lieu2->setLongitude("-1.993267");
         $lieu2->setTown($ville2);
         $manager->persist($lieu2);
 

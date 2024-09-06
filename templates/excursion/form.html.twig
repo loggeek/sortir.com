@@ -61,8 +61,8 @@
                 </a>
             </div>
 
-            <label for="street">Rue</label>
-            <input id="street" value="" class="form-control" disabled="disabled" style="background-color: white">
+            <label for="adress">Rue</label>
+            <input id="adress" value="" class="form-control" disabled="disabled" style="background-color: white">
 
             <label for="cp">Code Postal</label>
             <input id="cp" value="" class="form-control" disabled="disabled" style="background-color: white">
@@ -96,6 +96,7 @@
             locationsContainer.disabled = true;
 
             let villeSelector = document.getElementById('town');
+            let locationSelector = document.getElementById('excursion_location');
 
             if (villeSelector) {
                 villeSelector.addEventListener('change', function () {
@@ -113,6 +114,29 @@
                             .then(data => {
                                 displayLocations(data['locations']);
                                 displayCP(data['town']);
+                            })
+                            .catch(error => {
+                                console.error('There was a problem with the fetch operation:', error);
+                            });
+                    }
+                });
+            }
+
+            if (locationSelector) {
+                locationSelector.addEventListener('change', function () {
+                    let selectedLocation = locationSelector.options[locationSelector.selectedIndex].value;
+
+                    if (selectedLocation) {
+                        fetch(`/api/location/${selectedLocation}`)
+                            .then(response => {
+                                if (!response.ok) {
+                                    locationsContainer.disabled = true;
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                displayLocation(data['location']);
                             })
                             .catch(error => {
                                 console.error('There was a problem with the fetch operation:', error);
@@ -150,6 +174,17 @@
             function displayCP(town) {
                 let cpContainer = document.getElementById('cp');
                 cpContainer.value = town.zipcode;
+            }
+
+            function displayLocation(location) {
+                let adressContainer = document.getElementById('adress');
+                adressContainer.value = location.adress;
+
+                let latitudeContainer = document.getElementById('latitude');
+                latitudeContainer.value = location.latitude;
+
+                let longitudeContainer = document.getElementById('longitude');
+                longitudeContainer.value = location.longitude;
             }
 
         });

@@ -189,6 +189,25 @@ class ExcursionController extends abstractController
         return new JsonResponse($data);
     }
 
+    #[Route("/api/location/{locationId}", name: "api_location", methods: ['GET'])]
+    public function getLocation(int $locationId, LocationRepository $locationRepository): JsonResponse
+    {
+        $location = $locationRepository->findOneBy(['id' => $locationId]);
+
+        $locationData = [
+            'id' => $location->getId(),
+            'name' => $location->getName(),
+            'adress' => $location->getAddress(),
+            'longitude' => $location->getLongitude(),
+            'latitude' => $location->getLatitude(),
+        ];
+
+        $data = [
+            'location' => $locationData,
+        ];
+        return new JsonResponse($data);
+    }
+
     #[Route('/excursion/{id}/modifier', name: 'app_excursion_modifier')]
     public function modifier($id, Request $request, EntityManagerInterface $em, TownRepository $townRepository): Response
     {
