@@ -66,6 +66,13 @@
         </table>
     </div>
 
+    {% if excursion.cancelReason %}
+        <div class="m-3">
+            <h3>Raison de l'annulation</h3>
+            <p>{{ excursion.cancelReason }}</p>
+        </div>
+    {% endif %}
+
     <div class="col-4 m-3">
         <h3>Liste des participants inscrits</h3>
         <table class="table">
