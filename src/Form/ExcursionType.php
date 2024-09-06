@@ -63,6 +63,11 @@ class ExcursionType extends AbstractType
                 'label' => 'Lieu',
                 'required' => false,
             ])
+            ->add('cancelReason', TextareaType::class, [
+                'label' => 'Motif',
+                'required' => false,
+                'attr' => ['placeholder' => 'Entrez le motif de votre annulation']
+            ])
         ;
     }
 
@@ -71,7 +76,6 @@ class ExcursionType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Excursion::class,
         ]);
-
         $resolver->setRequired('user');
     }
 }

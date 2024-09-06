@@ -19,27 +19,27 @@ class Excursion
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: 'Le nom n\'est pas valide')]
+    #[Assert\NotBlank(message: 'Le nom n\'est pas valide', groups: ['creation'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Assert\NotBlank(message: 'La date n\'est pas valide')]
+    #[Assert\NotBlank(message: 'La date n\'est pas valide', groups: ['creation'])]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\NotBlank(message: 'La date n\'est pas valide')]
+    #[Assert\NotBlank(message: 'La date n\'est pas valide', groups: ['creation'])]
     private ?\DateTimeInterface $deadline = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message: 'Le nombre de places n\'est pas valide')]
+    #[Assert\NotBlank(message: 'Le nombre de places n\'est pas valide', groups: ['creation'])]
     private ?int $nb_seats = null;
 
     #[ORM\Column(nullable: true)]
-    #[Assert\NotBlank(message: 'La durée n\'est pas valide')]
+    #[Assert\NotBlank(message: 'La durée n\'est pas valide', groups: ['creation'])]
     private ?int $duration = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\NotBlank(message: 'La description n\'est pas valide')]
+    #[Assert\NotBlank(message: 'La description n\'est pas valide', groups: ['creation'])]
     private ?string $description = null;
 
     #[ORM\Column(type: 'string', enumType: ExcursionStatus::class)]
@@ -61,10 +61,11 @@ class Excursion
 
     #[ORM\ManyToOne(inversedBy: 'excursions')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank(message: 'Le lieu n\'est pas valide')]
+    #[Assert\NotBlank(message: 'Le lieu n\'est pas valide', groups: ['creation'])]
     private ?Location $location = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\NotBlank(message: 'Le motif n\'est pas valide', groups: ['cancel'])]
     private ?string $cancelReason = null;
 
     public function __construct()

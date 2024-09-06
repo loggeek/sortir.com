@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Excursion;
 use App\Entity\User;
 use App\Enum\ExcursionStatus;
+use App\Form\ExcursionCancelType;
 use App\Form\ExcursionType;
 use App\Repository\LocationRepository;
 use App\Repository\TownRepository;
@@ -83,39 +84,27 @@ class ExcursionController extends abstractController
     public function cancel($id, EntityManagerInterface $em, Request $request): Response
     {
         $excursion = $em->getRepository(Excursion::class)->find($id);
-        if (!$excursion) {
-            throw $this->createNotFoundException('Excursion not found');
-        }
+        if (!$excursion) throw $this->createNotFoundException('Excursion not found');
 
-        $cancelForm = $this->createFormBuilder()
-            ->add('motif', TextareaType::class, [
-                'label' => 'Motif',
-                'required' => true,
-                'attr' => ['placeholder' => 'Entrez le motif de votre annulation']
-            ])
-            ->getForm();
+        $cancelForm = $this->createForm(ExcursionCancelType::class, $excursion);
 
         $cancelForm->handleRequest($request);
 
-        if ($cancelForm->isSubmitted()) {
-            if ($cancelForm->isValid()) {
-                $motif = $cancelForm->get('motif')->getData();
-                $excursion->setCancelReason($motif);
-                $excursion->setStatus(ExcursionStatus::Cancelled);
-                $em->persist($excursion);
-                $em->flush();
+        if ($cancelForm->isSubmitted() && $cancelForm->isValid()) {
+            $excursion = $cancelForm->getData();
+            $excursion->setStatus(ExcursionStatus::Cancelled);
+            $em->persist($excursion);
+            $em->flush();
 
-                return $this->redirectToRoute('app_home');
-            }
+            return $this->redirectToRoute('app_home');
         }
 
-        return $this->render('excursion/cancel.html.twig', [
-            'excursion' => $excursion,
-            'cancelForm' => $cancelForm->createView(),
-        ]);
+        return $this->render('excursion/cancel.html.twig', ['excursion' => $excursion,
+            'cancelForm' => $cancelForm->createView(),]);
     }
 
-    #[Route('/excursion/{id}/publier', name: 'app_excursion_publish')]
+    #[
+        Route('/excursion/{id}/publier', name: 'app_excursion_publish')]
     public function publish($id, EntityManagerInterface $em): Response
     {
         $excursion = $em->getRepository(Excursion::class)->find($id);
