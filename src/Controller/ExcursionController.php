@@ -80,6 +80,25 @@ class ExcursionController extends abstractController
         ]);
     }
 
+    #[Route('/excursion/{id}/publier', name: 'app_excursion_publish')]
+    public function publish($id, EntityManagerInterface $em): Response
+    {
+        $excursion = $em->getRepository(Excursion::class)->find($id);
+
+        if (!$excursion) {
+            throw $this->createNotFoundException('Excursion not found');
+        }
+        else{
+            $excursion->setStatus(ExcursionStatus::Open);
+            $em->persist($excursion);
+            $em->flush();
+        }
+
+        return $this->render('excursion/detail.html.twig', [
+            'excursion' => $excursion,
+        ]);
+    }
+
     #[Route('/excursion/{id}/inscription', name: 'app_excursion_inscription')]
     public function inscription($id, EntityManagerInterface $em): Response
     {

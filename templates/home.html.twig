@@ -53,7 +53,7 @@
                         {% if excursion.organizer.id == user.id %}
                             {% if excursion.status.value == 'created' %}
                                 <a class="badge bg-secondary" href="#">Modifier</a>
-                                <a class="badge bg-success" href="#">Publier</a>
+                                <a class="badge bg-success" href="{{ path('app_excursion_publish', { 'id': excursion.id }) }}">Publier</a>
                             {% endif %}
                             {% if excursion.status.value != 'created' %}
                                 <a class="badge bg-danger" href="#">Annuler</a>
