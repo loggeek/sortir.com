@@ -10,78 +10,80 @@
     <div>
         <h2>Sorties</h2>
         <a href="{{ path('app_excursion_form') }}" class="btn btn-primary">Créer une sortie</a>
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th scope="col">Nom de la sortie</th>
-                <th scope="col">Date de la sortie</th>
-                <th scope="col">Date de clôture</th>
-                <th scope="col">Inscrits / Places</th>
-                <th scope="col">Etat</th>
-                <th scope="col">Inscrit</th>
-                <th scope="col">Organisateur</th>
-                <th scope="col">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for excursion in excursions %}
+        <div class="table-responsive" style="max-height: 400px">
+            <table class="table table-striped">
+                <thead>
                 <tr>
-                    <td>{{ excursion.name }}</td>
-                    <td>{{ excursion.date | date("d/m/Y H:i", "Europe/Paris") }}</td>
-                    <td>{{ excursion.deadline | date("d/m/Y") }}</td>
-                    <td>{{ excursion.participants.count }} / {{ excursion.nbSeats }}</td>
-                    <td>{{ excursion.status.translate }}</td>
-                    <td>
-                        {% if user in excursion.participants %}
-                            &check;
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if user == excursion.organizer %}
-                            {{ excursion.organizer.name }} {{ excursion.organizer.surname | first }}.
-                        {% else %}
-                            <a href="{{ path('profile_view', {'id': excursion.organizer.id}) }}">
-                                {{ excursion.organizer.name }} {{ excursion.organizer.surname | first }}.
-                            </a>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if excursion.status.value != 'created' %}
-                            <a class="badge bg-secondary" href="{{ path('app_excursion_detail', { 'id': excursion.id }) }}">Afficher</a>
-                        {% endif %}
-
-                        {% if excursion.organizer.id == user.id %}
-                            {% if excursion.status.value == 'created' %}
-                                <a class="badge bg-secondary" href="#">Modifier</a>
-                                <a class="badge bg-success" href="{{ path('app_excursion_publish', { 'id': excursion.id }) }}">Publier</a>
-                            {% endif %}
-                            {% if excursion.status.value != 'created' and excursion.status.value != 'cancelled' %}
-                                <a class="badge bg-danger" href="{{ path('app_excursion_cancel', { 'id': excursion.id }) }}">Annuler</a>
-                            {% endif %}
-                        {% endif %}
-
-                        {% if excursion.status.value == 'open' or excursion.status.value == 'closed' %}
-                            {% set inscrit = 0 %}
-
-                            {% for participant in excursion.participants %}
-                                {% if participant.id == user.id %}
-                                    {% set inscrit = 1 %}
-                                {% endif %}
-                            {% endfor %}
-
-                            {% if inscrit == 0 %}
-                                {% if excursion.status.value == 'open' %}
-                                    <a class="badge bg-primary" href="{{ path('app_excursion_inscription', { 'id': excursion.id }) }}">S'inscrire</a>
-                                {% endif %}
-                            {% else %}
-                                <a class="badge bg-warning" href="{{ path('app_excursion_desinscription', { 'id': excursion.id }) }}">Se désister</a>
-                            {% endif %}
-                        {% endif %}
-                    </td>
+                    <th scope="col">Nom de la sortie</th>
+                    <th scope="col">Date de la sortie</th>
+                    <th scope="col">Date de clôture</th>
+                    <th scope="col">Inscrits / Places</th>
+                    <th scope="col">Etat</th>
+                    <th scope="col">Inscrit</th>
+                    <th scope="col">Organisateur</th>
+                    <th scope="col">Actions</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for excursion in excursions %}
+                    <tr>
+                        <td>{{ excursion.name }}</td>
+                        <td>{{ excursion.date | date("d/m/Y H:i", "Europe/Paris") }}</td>
+                        <td>{{ excursion.deadline | date("d/m/Y") }}</td>
+                        <td>{{ excursion.participants.count }} / {{ excursion.nbSeats }}</td>
+                        <td>{{ excursion.status.translate }}</td>
+                        <td>
+                            {% if user in excursion.participants %}
+                                &check;
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if user == excursion.organizer %}
+                                {{ excursion.organizer.name }} {{ excursion.organizer.surname | first }}.
+                            {% else %}
+                                <a href="{{ path('profile_view', {'id': excursion.organizer.id}) }}">
+                                    {{ excursion.organizer.name }} {{ excursion.organizer.surname | first }}.
+                                </a>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if excursion.status.value != 'created' %}
+                                <a class="badge bg-secondary" href="{{ path('app_excursion_detail', { 'id': excursion.id }) }}">Afficher</a>
+                            {% endif %}
+
+                            {% if excursion.organizer.id == user.id %}
+                                {% if excursion.status.value == 'created' %}
+                                    <a class="badge bg-secondary" href="#">Modifier</a>
+                                    <a class="badge bg-success" href="{{ path('app_excursion_publish', { 'id': excursion.id }) }}">Publier</a>
+                                {% endif %}
+                                {% if excursion.status.value != 'created' and excursion.status.value != 'cancelled' %}
+                                    <a class="badge bg-danger" href="{{ path('app_excursion_cancel', { 'id': excursion.id }) }}">Annuler</a>
+                                {% endif %}
+                            {% endif %}
+
+                            {% if excursion.status.value == 'open' or excursion.status.value == 'closed' %}
+                                {% set inscrit = 0 %}
+
+                                {% for participant in excursion.participants %}
+                                    {% if participant.id == user.id %}
+                                        {% set inscrit = 1 %}
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if inscrit == 0 %}
+                                    {% if excursion.status.value == 'open' %}
+                                        <a class="badge bg-primary" href="{{ path('app_excursion_inscription', { 'id': excursion.id }) }}">S'inscrire</a>
+                                    {% endif %}
+                                {% else %}
+                                    <a class="badge bg-warning" href="{{ path('app_excursion_desinscription', { 'id': excursion.id }) }}">Se désister</a>
+                                {% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div>

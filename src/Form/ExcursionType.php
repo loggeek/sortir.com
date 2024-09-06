@@ -44,7 +44,7 @@ class ExcursionType extends AbstractType
                 'required' => false,
             ])
             ->add('duration', IntegerType::class, [
-                'label' => 'Durée (min)',
+                'label' => 'Durée (en minutes)',
                 'required' => false,
             ])
             ->add('description', TextareaType::class, [

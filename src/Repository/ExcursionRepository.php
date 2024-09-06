@@ -26,9 +26,6 @@ class ExcursionRepository extends ServiceEntityRepository
         ExcursionFilter $filter,
     ) {
         $qbd = $this->createQueryBuilder('e')
-            // Ne pas afficher les sorties archivées
-            ->andWhere('NOT e.status = :c_archives')
-            ->setParameter('c_archives', ExcursionStatus::Archived->value)
             // Ne pas afficher les sorties en cours de création par d'autres utilisateurs;
             ->andWhere('NOT (e.status = :c_created AND NOT e.organizer = :me)')
             ->setParameter('c_created', ExcursionStatus::Created->value)
@@ -56,8 +53,8 @@ class ExcursionRepository extends ServiceEntityRepository
                 ->setParameter('organizer', $user->getId());
         }
         if (!$filter->isShowpast()) {
-            $qbd->andWhere('NOT e.status = :c_finished')
-                ->setParameter('c_finished', ExcursionStatus::Finished->value);
+            $qbd->andWhere('NOT e.status = :c_archives')
+                ->setParameter('c_archives', ExcursionStatus::Archived->value);
         }
 
         $result = $qbd->getQuery()->getResult();
