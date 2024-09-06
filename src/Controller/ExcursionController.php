@@ -41,9 +41,11 @@ class ExcursionController extends abstractController
                 switch ($buttonClicked) {
                     case 'create':
                         $excursion->setStatus(ExcursionStatus::Created);
+                        $message = 'Sortie créée';
                         break;
                     case 'publish':
                         $excursion->setStatus(ExcursionStatus::Open);
+                        $message = 'Sortie publiée';
                         break;
                 }
 
@@ -52,7 +54,7 @@ class ExcursionController extends abstractController
                 $em->persist($excursion);
                 $em->flush();
 
-                $this->addFlash('success', "Sortie créée");
+                $this->addFlash('success', $message);
                 return $this->redirectToRoute('app_home');
             } else {
                 $this->addFlash('danger', "Formulaire invalide");
@@ -96,6 +98,7 @@ class ExcursionController extends abstractController
             $em->persist($excursion);
             $em->flush();
 
+            $this->addFlash('success', 'Sortie annulée');
             return $this->redirectToRoute('app_home');
         }
 
@@ -103,8 +106,7 @@ class ExcursionController extends abstractController
             'cancelForm' => $cancelForm->createView(),]);
     }
 
-    #[
-        Route('/excursion/{id}/publier', name: 'app_excursion_publish')]
+    #[Route('/excursion/{id}/publier', name: 'app_excursion_publish')]
     public function publish($id, EntityManagerInterface $em): Response
     {
         $excursion = $em->getRepository(Excursion::class)->find($id);
@@ -117,9 +119,8 @@ class ExcursionController extends abstractController
             $em->flush();
         }
 
-        return $this->render('excursion/detail.html.twig', [
-            'excursion' => $excursion,
-        ]);
+        $this->addFlash('success', 'Sortie publiée');
+        return $this->redirectToRoute('app_home');
     }
 
     #[Route('/excursion/{id}/inscription', name: 'app_excursion_inscription')]
@@ -137,9 +138,8 @@ class ExcursionController extends abstractController
             $em->flush();
         }
 
-        return $this->render('excursion/detail.html.twig', [
-            'excursion' => $excursion,
-        ]);
+        $this->addFlash('success', 'Vous êtes inscrit(e)');
+        return $this->redirectToRoute('app_home');
     }
 
     #[Route('/excursion/{id}/desinscription', name: 'app_excursion_desinscription')]
@@ -157,9 +157,8 @@ class ExcursionController extends abstractController
             $em->flush();
         }
 
-        return $this->render('excursion/detail.html.twig', [
-            'excursion' => $excursion,
-        ]);
+        $this->addFlash('success', 'Vous êtes désinscrit(e)');
+        return $this->redirectToRoute('app_home');
     }
 
     #[Route("/api/locations/{townId}", name: "api_locations", methods: ['GET'])]
