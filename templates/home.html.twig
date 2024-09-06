@@ -60,23 +60,22 @@
                             {% endif %}
                         {% endif %}
 
-                        {% if excursion.status.value == 'open' %}
+                        {% if excursion.status.value == 'open' or excursion.status.value == 'closed' %}
                             {% set inscrit = 0 %}
 
                             {% for participant in excursion.participants %}
-
                                 {% if participant.id == user.id %}
                                     {% set inscrit = 1 %}
                                 {% endif %}
-
                             {% endfor %}
 
                             {% if inscrit == 0 %}
-                                <a class="badge bg-primary" href="{{ path('app_excursion_inscription', { 'id': excursion.id }) }}">S'inscrire</a>
+                                {% if excursion.status.value == 'open' %}
+                                    <a class="badge bg-primary" href="{{ path('app_excursion_inscription', { 'id': excursion.id }) }}">S'inscrire</a>
+                                {% endif %}
                             {% else %}
-                                <a class="badge bg-danger" href="{{ path('app_excursion_desinscription', { 'id': excursion.id }) }}">Se désinscrire</a>
+                                <a class="badge bg-warning" href="{{ path('app_excursion_desinscription', { 'id': excursion.id }) }}">Se désister</a>
                             {% endif %}
-
                         {% endif %}
                     </td>
                 </tr>
