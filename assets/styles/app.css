@@ -2,8 +2,11 @@ body {
     margin: 0;
     height: 100%;
 }
-h1, label{
+h1, h2, h3, h4, h5, h6, label{
     font-family: "Nerko One", cursive;
     font-weight: 400;
     font-style: normal;
+}
+a.badge {
+    text-decoration: none;
 }

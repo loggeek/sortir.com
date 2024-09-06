@@ -9,8 +9,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\ResetType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -38,35 +36,39 @@ class ProfilUserType extends AbstractType
             ->add('email',  EmailType::class, [
                 'label' => 'Email : '
             ])
-            ->add('plainPassword', RepeatedType::class, [
+            ->add('password', RepeatedType::class, [
+
                 'type' => PasswordType::class,
+
+                'required' => false,
+
                 'first_options'  => [
                     'label' => 'Mot de passe : ',
                 ],
                 'second_options' => [
-                    'label' => 'Confirmation : ', // Ce champ de confirmation n'est pas directement mappé à l'entité "User"
+                    'label' => 'Confirmation : ', // Ce champ de confirmation n'est pas directement mappé à l'entité "User"e,
                 ],
                 'invalid_message' => 'Les deux mots de passe doivent être identiques',
+
                 'mapped' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez renseigner le nouveau mot de passe',
-                    ]),
-                    new Length([
-                        'min' => 5,
-                        'minMessage' => ' Votre mot de passe doit contenir au moins {{ limit }} caractères',
-                        'max' => 4096,
-                    ]),
-                ],
+
+//                'constraints' => [
+//                    new NotBlank([
+//                        'message' => 'Veuillez renseigner le nouveau mot de passe',
+//                    ]),
+//                    new Length([
+//                        'min' => 5,
+//                        'minMessage' => ' Votre mot de passe doit contenir au moins {{ limit }} caractères',
+//                        'max' => 4096,
+//                    ]),
+//                ],
             ])
             ->add('campus', EntityType::class, [
                     'class' => Campus::class,
                     'choice_label' => 'name',
                     'label' => 'Campus',
                     'required' => false,
-                ]
-
-            );
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

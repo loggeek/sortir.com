@@ -4,7 +4,8 @@
 
 {% block body %}
 
-    <h2 class="text-center m-5">Mon profil</h2>
+    <h2 class="text-center m-1">Mon profil</h2>
+
     <div class="container">
 
         <div class="row">
@@ -19,21 +20,21 @@
                 {{ form_row(form.surname) }}
                 {{ form_row(form.phone) }}
                 {{ form_row(form.email) }}
-                {{ form_row(form.plainPassword.first) }}
-                {{ form_row(form.plainPassword.second) }}
+                {{ form_row(form.password.first) }}
+                {{ form_row(form.password.second) }}
                 {{ form_row(form.campus) }}
 
                 /** TODO Traiter l'ajout de la photo de profile **/
+                <section class='row text-center mt-4'>
+                    <div class='col center'>
+                        <button type="submit" class='btn btn-primary btn-lg'>Enregistrer</button>
+                        <a href="{{ path('app_home') }}" class='btn btn-danger btn-lg'>Annuler</a>
+                    </div>
+                </section>
 
                 {{ form_end(form) }}
             </div>
         </div>
-        <section class='row text-center mt-4'>
-            <div class='col center'>
-                <button type="submit" class='btn btn-primary btn-lg'>Enregistrer</button>
-                <a href="{{ path('app_home') }}" class='btn btn-danger btn-lg'>Annuler</a>
-            </div>
-        </section>
     </div>
 
 {%  endblock %}
