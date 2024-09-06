@@ -24,10 +24,6 @@ class HomeController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        if ($user == null) {
-            return $this->redirectToRoute('app_login');
-        }
-
         $filter = new ExcursionFilter();
         $filterForm = $this->createForm(ExcursionFilterType::class, $filter, ['user' => $user]);
         $filterForm->handleRequest($request);
