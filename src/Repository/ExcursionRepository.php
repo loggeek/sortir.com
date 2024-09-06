@@ -72,6 +72,9 @@ class ExcursionRepository extends ServiceEntityRepository
                 return !$excursion->getParticipants()->contains($user);
             });
         }
+        usort($result, function (Excursion $a, Excursion $b) {
+            return $a->getDate() <=> $b->getDate();
+        });
 
         return $result;
     }
