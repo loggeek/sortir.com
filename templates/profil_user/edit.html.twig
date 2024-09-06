@@ -9,8 +9,14 @@
     <div class="container">
 
         <div class="row">
-            <div class=" logo col-md-3">
-                <img src="https://images.pexels.com/photos/100582/pexels-photo-100582.jpeg?cs=srgb&dl=pexels-philipp-m-100582.jpg&fm=jpg" class="p-1 bg-dark" alt="" id="video" width="130" height="150" />
+
+            <div class="logo col-md-3">
+                {% if user.profileImage %}
+                    <img class="img-thumbnail rounded-circle" src="{{ asset('uploads/profile_images/' ~ user.profileImage) }}" alt="{{ user.username }}'s profile picture">
+
+                {% else %}
+                    <img class="img-thumbnail rounded-circle" src="../uploads/profile_images/default_image.png" class="rounded float-start" alt="Aucun photo de profil">
+                {% endif %}
             </div>
 
             <div class=" infos col-md-7">
@@ -24,14 +30,12 @@
                 {{ form_row(form.password.second) }}
                 {{ form_row(form.campus) }}
 
-                /** TODO Traiter l'ajout de la photo de profile **/
                 <section class='row text-center mt-4'>
                     <div class='col center'>
                         <button type="submit" class='btn btn-primary btn-lg'>Enregistrer</button>
                         <a href="{{ path('app_home') }}" class='btn btn-danger btn-lg'>Annuler</a>
                     </div>
                 </section>
-
                 {{ form_end(form) }}
             </div>
         </div>
