@@ -13,9 +13,9 @@
             <div class="logo col-md-3">
                 {% if user.profileImage %}
                     <img class="img-thumbnail rounded-circle" src="{{ asset('uploads/profile_images/' ~ user.profileImage) }}" alt="{{ user.username }}'s profile picture">
-
                 {% else %}
                     <img class="img-thumbnail rounded-circle" src="../uploads/profile_images/default_image.png" class="rounded float-start" alt="Aucun photo de profil">
+{#                    <p class="text-center text-secondary"> Aucune image de profile disponible...</p>#}
                 {% endif %}
             </div>
 
@@ -29,6 +29,12 @@
                 {{ form_row(form.password.first) }}
                 {{ form_row(form.password.second) }}
                 {{ form_row(form.campus) }}
+                <div class="form-group">
+                    {{ form_row(form.filePlaceholder) }}
+                    {{ form_widget(form.profileImage) }}
+                </div>
+{#                {{ form_row(form.profileImage) }}#}
+
 
                 <section class='row text-center mt-4'>
                     <div class='col center'>
@@ -36,6 +42,17 @@
                         <a href="{{ path('app_home') }}" class='btn btn-danger btn-lg'>Annuler</a>
                     </div>
                 </section>
+
+                <script>
+                    document.querySelector('#{{ form.filePlaceholder.vars.id }}').addEventListener('click', function() {
+                        document.querySelector('#{{ form.profileImage.vars.id }}').click();
+                    });
+
+                    document.querySelector('#{{ form.profileImage.vars.id }}').addEventListener('change', function() {
+                        document.querySelector('#{{ form.filePlaceholder.vars.id }}').value = this.files[0].name;
+                    });
+                </script>
+
                 {{ form_end(form) }}
             </div>
         </div>

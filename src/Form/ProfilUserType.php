@@ -71,23 +71,23 @@ class ProfilUserType extends AbstractType
                     'label' => 'Campus',
                     'required' => false,
             ])
-            ->add('profileImage', FileType::class, [
-                'label' => 'Ma photo',
-//                'placeholder' => 'Télécharger vers le serveur (JPEG, PNG)',
-                'required' => false,
-                'mapped' => false,
-                'constraints' => [
-                    new File([
-                        'maxSize' => '2M',
-                        'mimeTypes' => [
-                            'image/jpeg',
-                            'image/png',
-                        ],
-                        'mimeTypesMessage' => 'Veillez télécharger une image valide en JPEG ou en PNG',
-                    ]),
+            ->add('filePlaceholder', TextType::class, [
+                'mapped' => false, // Ce champ n'est pas mappé à l'entité
+                'label' => 'Ma photo : ',
+                'help' => 'Le format de l\'image doit être en PNG ou en JPEG...',
+                'attr' => [
+                    'placeholder' => 'Télécharger le fichier vers le serveur',
+                    'readonly' => true,
                 ],
             ])
-        ;
+            ->add('profileImage', FileType::class, [
+                'label' => false,
+                'required' => false,
+                'data_class' => null,
+                'attr' => [
+                    'style' => 'display:none;', // Masquer le champ file
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

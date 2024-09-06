@@ -7,6 +7,7 @@ use App\Repository\CampusRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -64,14 +65,16 @@ class ProfilUserController extends AbstractController {
 
             if($file) {
                 $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename).'-'.$user->getName().'_'.$user->getSurname();
+                $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
 
+                try {
                 // Déplacez le fichier dans un répertoire dédié
-                $file->move(
-                    $this->getParameter('kernel.project_dir').'/public/uploads/profile_images',
-                    $newFilename
-                );
+                    $file->move(
+                        $this->getParameter('kernel.project_dir').'/public/uploads/profile_images',
+                        $newFilename
+                    );
+                } catch (FileException $e) {}
 
                 $user->setProfileImage($newFilename);
             }
