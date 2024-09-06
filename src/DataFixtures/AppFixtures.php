@@ -91,8 +91,8 @@ class AppFixtures extends Fixture
         $excursion1->setOrganizer($user1);
         $excursion1->setCampus($campus1);
         $excursion1->setLocation($lieu1);
-        $excursion1->setDate(new \DateTime());
-        $excursion1->setDeadline(new \DateTime());
+        $excursion1->setDate(new \DateTime(202409151900));
+        $excursion1->setDeadline(new \DateTime(20240914));
         $excursion1->setNbSeats(8);
         $excursion1->setDuration(120);
         $excursion1->setDescription('Une bonne entrecote');
@@ -104,8 +104,8 @@ class AppFixtures extends Fixture
         $excursion2->setOrganizer($user1);
         $excursion2->setCampus($campus1);
         $excursion2->setLocation($lieu2);
-        $excursion2->setDate(new \DateTime());
-        $excursion2->setDeadline(new \DateTime());
+        $excursion2->setDate(new \DateTime(202409151900));
+        $excursion2->setDeadline(new \DateTime(20240914));
         $excursion2->setNbSeats(8);
         $excursion2->setDuration(120);
         $excursion2->setDescription('Un peu de natation');
@@ -119,8 +119,8 @@ class AppFixtures extends Fixture
         $excursion3->setOrganizer($user1);
         $excursion3->setCampus($campus1);
         $excursion3->setLocation($lieu1);
-        $excursion3->setDate(new \DateTime());
-        $excursion3->setDeadline(new \DateTime());
+        $excursion3->setDate(new \DateTime(202409151900));
+        $excursion3->setDeadline(new \DateTime(20240914));
         $excursion3->setNbSeats(8);
         $excursion3->setDuration(120);
         $excursion3->setDescription('Un peu de glisse');
@@ -128,6 +128,36 @@ class AppFixtures extends Fixture
         $excursion3->addParticipant($user2);
         $excursion3->addParticipant($user3);
         $manager->persist($excursion3);
+
+        $excursion4 = new Excursion();
+        $excursion4->setName('Karaoké');
+        $excursion4->setOrganizer($user1);
+        $excursion4->setCampus($campus2);
+        $excursion4->setLocation($lieu2);
+        $excursion4->setDate(new \DateTime(202409151900));
+        $excursion4->setDeadline(new \DateTime(20240914));
+        $excursion4->setNbSeats(8);
+        $excursion4->setDuration(120);
+        $excursion4->setDescription('Un peu de chant');
+        $excursion4->setStatus(ExcursionStatus::Closed);
+        $excursion4->addParticipant($user2);
+        $excursion4->addParticipant($user3);
+        $manager->persist($excursion4);
+
+        $excursion5 = new Excursion();
+        $excursion5->setName('Plage');
+        $excursion5->setOrganizer($user3);
+        $excursion5->setCampus($campus1);
+        $excursion5->setLocation($lieu2);
+        $excursion5->setDate(new \DateTime(202409151900));
+        $excursion5->setDeadline(new \DateTime(20240914));
+        $excursion5->setNbSeats(8);
+        $excursion5->setDuration(120);
+        $excursion5->setDescription('Un peu de bronzage');
+        $excursion5->setStatus(ExcursionStatus::Finished);
+        $excursion5->addParticipant($user2);
+        $excursion5->addParticipant($user1);
+        $manager->persist($excursion5);
 
 
         $manager->flush();
