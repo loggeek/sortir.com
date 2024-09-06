@@ -164,21 +164,30 @@ class ExcursionController extends abstractController
     }
 
     #[Route("/api/locations/{townId}", name: "api_locations", methods: ['GET'])]
-    public function getLocations(int $townId, LocationRepository $locationRepository): JsonResponse
+    public function getLocations(int $townId, LocationRepository $locationRepository, TownRepository $townRepository): JsonResponse
     {
+        $town = $townRepository->findOneBy(['id' => $townId]);
         $locations = $locationRepository->findBy(['town' => $townId]);
 
-        $data = array_map(function ($location) {
+        $townData = [
+            'id' => $town->getId(),
+            'name' => $town->getName(),
+            'zipcode' => $town->getZipcode(),
+        ];
+
+        $locationsData = array_map(function ($location) {
             return [
                 'id' => $location->getId(),
                 'name' => $location->getName(),
             ];
         }, $locations);
 
+        $data = [
+            'town' => $townData,
+            'locations' => $locationsData,
+        ];
         return new JsonResponse($data);
     }
-
-
 
     #[Route('/excursion/{id}/modifier', name: 'app_excursion_modifier')]
     public function modifier($id, Request $request, EntityManagerInterface $em, TownRepository $townRepository): Response
@@ -210,7 +219,7 @@ class ExcursionController extends abstractController
                     case 'delete':
                         $em->remove($excursion);
                         $em->flush();
-                        $this->addFlash('success', 'Sorite supprimée');
+                        $this->addFlash('success', 'Sortie supprimée');
                         return $this->redirectToRoute('app_home');
                 }
 
