@@ -1,10 +1,10 @@
-
 {% extends 'base.html.twig' %}
 
 {% block body %}
     <div>
         <h1>Bienvenue {{ user.surname }} !</h1>
-        <p>La date est le <b>{{ "now" | date("d/m/Y") }}</b>. Il est <b>{{ "now" | date("H:i", "Europe/Paris") }}</b>.</p>
+        <p>La date est le <b>{{ "now" | date("d/m/Y") }}</b>. Il est <b>{{ "now" | date("H:i", "Europe/Paris") }}</b>.
+        </p>
     </div>
 
     <div>
@@ -13,61 +13,75 @@
 
         <table class="table table-striped">
             <thead>
-                <tr>
-                    <th scope="col">Nom de la sortie</th>
-                    <th scope="col">Date de la sortie</th>
-                    <th scope="col">Date de clôture</th>
-                    <th scope="col">Inscrits / Places</th>
-                    <th scope="col">Etat</th>
-                    <th scope="col">Inscrit</th>
-                    <th scope="col">Organisateur</th>
-                    <th scope="col">Actions</th>
-                </tr>
+            <tr>
+                <th scope="col">Nom de la sortie</th>
+                <th scope="col">Date de la sortie</th>
+                <th scope="col">Date de clôture</th>
+                <th scope="col">Inscrits / Places</th>
+                <th scope="col">Etat</th>
+                <th scope="col">Inscrit</th>
+                <th scope="col">Organisateur</th>
+                <th scope="col">Actions</th>
+            </tr>
             </thead>
             <tbody>
-                {% for excursion in excursions %}
-                    <tr>
-                        <td>{{ excursion.name }}</td>
-                        <td>{{ excursion.date | date("d/m/Y H:i", "Europe/Paris") }}</td>
-                        <td>{{ excursion.deadline | date("d/m/Y") }}</td>
-                        <td>{{ excursion.participants.count }} / {{ excursion.nbSeats }}</td>
-                        <td>{{ excursion.status.translate }}</td>
-                        <td>
-                            {% if user in excursion.participants %}
-                                &check;
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if user == excursion.organizer %}
+            {% for excursion in excursions %}
+                <tr>
+                    <td>{{ excursion.name }}</td>
+                    <td>{{ excursion.date | date("d/m/Y H:i", "Europe/Paris") }}</td>
+                    <td>{{ excursion.deadline | date("d/m/Y") }}</td>
+                    <td>{{ excursion.participants.count }} / {{ excursion.nbSeats }}</td>
+                    <td>{{ excursion.status.translate }}</td>
+                    <td>
+                        {% if user in excursion.participants %}
+                            &check;
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if user == excursion.organizer %}
+                            {{ excursion.organizer.name }} {{ excursion.organizer.surname | first }}.
+                        {% else %}
+                            <a href="{{ path('profile_view', {'id': excursion.organizer.id}) }}">
                                 {{ excursion.organizer.name }} {{ excursion.organizer.surname | first }}.
-                            {% else %}
-                                <a href="{{ path('profile_view', {'id': excursion.organizer.id}) }}">
-                                    {{ excursion.organizer.name }} {{ excursion.organizer.surname | first }}.
-                                </a>
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if excursion.status.value != 'created' %}
+                            <a href="{{ path('app_excursion_detail', { 'id': excursion.id }) }}">Afficher</a>
+                        {% endif %}
+
+                        {% if excursion.organizer.id == user.id %}
+                            {% if excursion.status.value == 'created' %}
+                                <a href="#">Modifier</a>
+                                <a href="#">Publier</a>
                             {% endif %}
-                        </td>
-                        <td>
                             {% if excursion.status.value != 'created' %}
-                                <a href="{{ path('app_excursion_detail', { 'id': excursion.id }) }}">Afficher</a>
+                                <a href="#">Annuler</a>
+                            {% endif %}
+                        {% endif %}
+
+                        {% if excursion.status.value == 'open' %}
+                            {% set inscrit = 0 %}
+
+                            {% for participant in excursion.participants %}
+
+                                {% if participant.id == user.id %}
+                                    {% set inscrit = 1 %}
+                                {% endif %}
+
+                            {% endfor %}
+
+                            {% if inscrit == 0 %}
+                                <a href="{{ path('app_excursion_inscription', { 'id': excursion.id }) }}">S'inscrire</a>
+                            {% else %}
+                                <a href="{{ path('app_excursion_desinscription', { 'id': excursion.id }) }}">Se désinscrire</a>
                             {% endif %}
 
-                            {% if excursion.organizer.id == user.id %}
-                                {% if excursion.status.value == 'created' %}
-                                    <a href="#">Modifier</a>
-                                    <a href="#">Publier</a>
-                                {% endif %}
-                                {% if excursion.status.value != 'created' %}
-                                    <a href="#">Annuler</a>
-                                {% endif %}
-                            {% endif %}
-
-                            {% if excursion.status.value == 'open' %}
-                                <a href="#">S'inscrire</a>
-                                <a href="#">Se désinscrire</a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endfor %}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>
