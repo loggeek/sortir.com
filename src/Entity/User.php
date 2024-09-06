@@ -56,6 +56,16 @@ class User implements  PasswordAuthenticatedUserInterface, UserInterface
     #[ORM\JoinColumn(nullable: false)]
     private ?Campus $campus = null;
 
+    /**
+     * @Assert\File(
+     *     maxSize = "4M",
+     *     maxSizeMessage = "La taille de l'image ne doit pas dépasser 4 Mo.",
+     *     mimeTypes = {"image/jpeg", "image/png"},
+     *     mimeTypesMessage = "Veuillez télécharger une image valide (JPEG ou PNG).",
+     *     minSize = "5B",
+     *     minSizeMessage = "L'image doit être d'au moins 5 octets."
+     * )
+     */
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $profileImage = null;
 
