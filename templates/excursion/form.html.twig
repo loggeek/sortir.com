@@ -82,10 +82,8 @@
         <a href="{{ path('app_home') }}" class="btn btn-danger m-2">Annuler</a>
     </div>
 
-    {{ form_end(excursionForm) }}
-
-
-
+    {{ form_widget(excursionForm._token) }}
+    {{ form_end(excursionForm, {'render_rest': false}) }}
 
     <script>
 
