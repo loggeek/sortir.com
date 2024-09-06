@@ -80,6 +80,7 @@ class ProfilUserController extends AbstractController {
 
                 $user->setProfileImage($newFilename);
             } else {
+                // On garde l'image du profile en cours si pas de modification de l'image de profile
                 $user->setProfileImage($originalProfileImage);
             }
 
