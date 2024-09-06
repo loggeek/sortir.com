@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Gestion des campus</h1>
+
+    <label for="filtre_nom">Filtrer les sites :</label>
+    <input id="filtre_nom" type="text" placeholder="&#x1F50E;&#xFE0E;">
+    <a href="#" class="btn btn-sm btn-primary">Rechercher</a>
+
+    <div class="table-responsive" style="max-height: 400px">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Campus</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for campus in sites %}
+                <tr>
+                    <td>{{ campus.name }}</td>
+                    <td>
+                        <button class="badge bg-primary">Modifier</button>
+                        <button class="badge bg-danger">Supprimer</button>
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td>
+                    <input id="campus_nom" type="text">
+                </td>
+                <td>
+                    <button class="badge bg-success" onclick="ajouter()">Ajouter</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function ajouter()
+        {
+            let $campus_nom = document.getElementById("campus_nom");
+            let nom = $campus_nom.value;
+
+            if (confirm("Veuillez confirmer l'ajout du campus " + nom)) {
+                window.location.href = "{{ url('admin_campus') }}add/" + nom;
+            }
+        }
+    </script>
+{% endblock %}
