@@ -21,7 +21,7 @@
                     <td>{{ campus.name }}</td>
                     <td>
                         <button class="badge bg-primary" onclick="modifier('{{ campus.name }}')">Modifier</button>
-                        <button class="badge bg-danger">Supprimer</button>
+                        <button class="badge bg-danger" onclick="supprimer('{{ campus.name }}')">Supprimer</button>
                     </td>
                 </tr>
             {% endfor %}
@@ -66,6 +66,13 @@
                 return;
 
             window.location.href = `{{ url('admin_campus') }}/modify/${campus}/${nom}`;
+        }
+
+        function supprimer(campus)
+        {
+            if (confirm("Veuillez confirmer la suppression du campus " + campus + ".\nCette action est irréversible !")) {
+                window.location.href = "{{ url('admin_campus') }}/delete/" + campus;
+            }
         }
     </script>
 {% endblock %}

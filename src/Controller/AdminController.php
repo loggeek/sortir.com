@@ -53,7 +53,6 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('admin_campus');
     }
 
-
     #[Route('/campus/modify/{ancien}/{nouveau}', name: 'campus_modify')]
     public function modifyCampus(string $ancien, string $nouveau, CampusRepository $campusRepository, EntityManagerInterface $em): Response
     {
@@ -87,6 +86,21 @@ class AdminController extends AbstractController
         // modifier le campus
         $campus->setName($nouveau);
         $em->persist($campus);
+        $em->flush();
+
+        return $this->redirectToRoute('admin_campus');
+    }
+
+
+    #[Route('/campus/delete/{nom}', name: 'campus_delete')]
+    public function deleteCampus(string $nom, CampusRepository $campusRepository, EntityManagerInterface $em): Response
+    {
+        foreach ($campusRepository->findAll() as $campus) {
+            if ($campus->getName() === $nom) {
+                $em->remove($campus);
+            }
+        }
+
         $em->flush();
 
         return $this->redirectToRoute('admin_campus');
