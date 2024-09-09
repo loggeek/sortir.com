@@ -15,11 +15,24 @@ class AdminController extends AbstractController
 {
     // TODO: ville
 
-    #[Route('/campus/', name: 'campus')]
+    #[Route('/campus', name: 'campus')]
     public function campus(CampusRepository $campusRepository): Response
     {
         return $this->render('admin/campus.html.twig', [
             'sites' => $campusRepository->findAll()
+        ]);
+    }
+
+    #[Route('/campus/{filter}', name: 'campus_filter')]
+    public function filterCampus(string $filter, CampusRepository $campusRepository): Response
+    {
+        $sites = $campusRepository->findAll();
+        $sites = array_filter($sites,
+            fn ($campus) => str_contains(strtoupper($campus->getName()), strtoupper($filter))
+        );
+
+        return $this->render('admin/campus.html.twig', [
+            'sites' => $sites
         ]);
     }
 

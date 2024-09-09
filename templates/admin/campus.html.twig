@@ -5,7 +5,7 @@
 
     <label for="filtre_nom">Filtrer les sites :</label>
     <input id="filtre_nom" type="text" placeholder="&#x1F50E;&#xFE0E;">
-    <a href="#" class="btn btn-sm btn-primary">Rechercher</a>
+    <a href="#" class="btn btn-sm btn-primary" onclick="filtrer()">Rechercher</a>
 
     <div class="table-responsive" style="max-height: 400px">
         <table class="table table-striped">
@@ -43,8 +43,16 @@
             let nom = $campus_nom.value;
 
             if (confirm("Veuillez confirmer l'ajout du campus " + nom)) {
-                window.location.href = "{{ url('admin_campus') }}add/" + nom;
+                window.location.href = "{{ url('admin_campus') }}/add/" + nom;
             }
+        }
+
+        function filtrer()
+        {
+            let $filtre_nom = document.getElementById("filtre_nom");
+            let filtre = $filtre_nom.value;
+
+            window.location.href = "{{ url('admin_campus') }}/" + filtre;
         }
     </script>
 {% endblock %}
