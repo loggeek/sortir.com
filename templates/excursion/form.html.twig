@@ -43,7 +43,12 @@
             <select id="town" name="town" class="form-select">
                 <option>-- Selectionner une ville --</option>
                 {% for town in towns %}
-                    <option value= {{ town.id }}>{{ town.name }}</option>
+                    <option value="{{ town.id }}"
+                            {% if location is defined and location.town.id == town.id %}
+                                selected
+                            {% endif %}>
+                        {{ town.name }}
+                    </option>
                 {% endfor %}
             </select>
 
@@ -61,17 +66,17 @@
                 </a>
             </div>
 
-            <label for="adress">Rue</label>
-            <input id="adress" value="" class="form-control" disabled="disabled" style="background-color: white">
+            <label for="address">Rue</label>
+            <input id="address" value="{{ location is defined ? (location.address ?: '') : '' }}" class="form-control" disabled="disabled" style="background-color: white">
 
             <label for="cp">Code Postal</label>
-            <input id="cp" value="" class="form-control" disabled="disabled" style="background-color: white">
+            <input id="cp" value="{{ location is defined ? (location.town.zipcode ?: '') : '' }}" class="form-control" disabled="disabled" style="background-color: white">
 
             <label for="latitude">Latitude</label>
-            <input id="latitude" value="" class="form-control" disabled="disabled" style="background-color: white">
+            <input id="latitude" value="{{ location is defined ? (location.latitude ?: '') : '' }}" class="form-control" disabled="disabled" style="background-color: white">
 
             <label for="longitude">Longitude</label>
-            <input id="longitude" value="" class="form-control" disabled="disabled" style="background-color: white">
+            <input id="longitude" value="{{ location is defined ? (location.longitude ?: '') : '' }}" class="form-control" disabled="disabled" style="background-color: white">
 
         </div>
     </div>
@@ -94,12 +99,16 @@
 
             let locationsContainer = document.getElementById('excursion_location');
             locationsContainer.disabled = true;
-
             let villeSelector = document.getElementById('town');
             let locationSelector = document.getElementById('excursion_location');
+            let addressContainer = document.getElementById('address');
+            let latitudeContainer = document.getElementById('latitude');
+            let longitudeContainer = document.getElementById('longitude');
 
+            // Ecouter le changement de ville
             if (villeSelector) {
                 villeSelector.addEventListener('change', function () {
+                    resetLocationInfo();
                     let selectedTown = villeSelector.options[villeSelector.selectedIndex].value;
 
                     if (selectedTown) {
@@ -122,6 +131,7 @@
                 });
             }
 
+            // Ecouter le changement de location
             if (locationSelector) {
                 locationSelector.addEventListener('change', function () {
                     let selectedLocation = locationSelector.options[locationSelector.selectedIndex].value;
@@ -145,6 +155,7 @@
                 });
             }
 
+            // Afficher la liste des locations
             function displayLocations(locations) {
                 let locationsContainer = document.getElementById('excursion_location');
 
@@ -171,20 +182,23 @@
                 }
             }
 
+            // Afficher le bon CP
             function displayCP(town) {
                 let cpContainer = document.getElementById('cp');
                 cpContainer.value = town.zipcode;
             }
 
+            // Afficher les bonnes addresses, Long. et lat.
             function displayLocation(location) {
-                let adressContainer = document.getElementById('adress');
-                adressContainer.value = location.adress;
-
-                let latitudeContainer = document.getElementById('latitude');
+                addressContainer.value = location.address;
                 latitudeContainer.value = location.latitude;
-
-                let longitudeContainer = document.getElementById('longitude');
                 longitudeContainer.value = location.longitude;
+            }
+
+            function resetLocationInfo(){
+                addressContainer.value = "";
+                latitudeContainer.value = "";
+                longitudeContainer.value = "";
             }
 
         });

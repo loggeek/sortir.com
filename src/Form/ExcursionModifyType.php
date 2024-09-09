@@ -8,6 +8,7 @@ use App\Entity\Location;
 use App\Entity\User;
 use App\Enum\ExcursionStatus;
 use Doctrine\DBAL\Types\StringType;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -24,6 +25,8 @@ class ExcursionModifyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $user = $options['user'];
+        $excursion = $options['data'];
+        $currentLocation = $excursion->getLocation();
 
         $builder
             ->add('name', TextType::class, [
@@ -62,6 +65,9 @@ class ExcursionModifyType extends AbstractType
                 'choice_label' => 'name',
                 'label' => 'Lieu',
                 'required' => false,
+                'query_builder' => fn(EntityRepository $er) => $er->createQueryBuilder('l')
+                    ->where('l.id = :locationId')
+                    ->setParameter('locationId', $currentLocation->getId()),
             ])
             ->add('cancelReason', TextareaType::class, [
                 'label' => 'Motif',
