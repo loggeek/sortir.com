@@ -65,14 +65,6 @@ class ExcursionModifyType extends AbstractType
                 'choice_label' => 'name',
                 'label' => 'Lieu',
                 'required' => false,
-                'query_builder' => fn(EntityRepository $er) => $er->createQueryBuilder('l')
-                    ->where('l.id = :locationId')
-                    ->setParameter('locationId', $currentLocation->getId()),
-            ])
-            ->add('cancelReason', TextareaType::class, [
-                'label' => 'Motif',
-                'required' => false,
-                'attr' => ['placeholder' => 'Entrez le motif de votre annulation']
             ])
         ;
     }
