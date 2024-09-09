@@ -3,7 +3,7 @@
 {% block title %}Détail de la sortie{% endblock %}
 {% block body %}
 
-    <h2 class="text-center">Afficher une sortie</h2>
+    <h2 class="text-center">Annuler une sortie</h2>
 
     <label for="name">Nom de la sortie</label>
     <input id="name" value="{{ excursion.name }}" class="form-control" disabled="disabled"
@@ -28,8 +28,8 @@
     {{ form_errors(cancelForm.cancelReason) }}
 
     <div class="d-flex justify-content-center m-3">
-        <button type="submit" class="btn btn-primary m-2">Enregistrer</button>
-        <a href="{{ path('app_home') }}" class="btn btn-danger m-2">Annuler</a>
+        <button type="submit" class="btn btn-danger m-2">Annuler</button>
+        <a href="{{ path('app_home') }}" class="btn btn-secondary m-2">Retour</a>
     </div>
 
     {{ form_widget(cancelForm._token) }}
