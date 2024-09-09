@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Campus;
 use App\Repository\CampusRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -48,6 +47,45 @@ class AdminController extends AbstractController
 
         $campus = new Campus();
         $campus->setName($nom);
+        $em->persist($campus);
+        $em->flush();
+
+        return $this->redirectToRoute('admin_campus');
+    }
+
+
+    #[Route('/campus/modify/{ancien}/{nouveau}', name: 'campus_modify')]
+    public function modifyCampus(string $ancien, string $nouveau, CampusRepository $campusRepository, EntityManagerInterface $em): Response
+    {
+        $sites = $campusRepository->findAll();
+
+        // vérifier que le nouveau nom du campus ne soit pas déjà attribué
+        foreach ($campusRepository->findAll() as $campus) {
+            if ($campus->getName() === $nouveau) {
+                // TODO: avertir que le campus existe déjà
+                return $this->redirectToRoute('admin_campus');
+            }
+        }
+
+        // trouver le campus à modifier
+        // c'est moche mais ça fait l'affaire - bouger ça dans le service ?
+        $campus = (function() use ($sites, $ancien) {
+            foreach ($sites as $campus) {
+                if ($campus->getName() === $ancien) {
+                    return $campus;
+                }
+            }
+            return null;
+        })();
+
+        // vérifier qu'il existe bel et bien
+        if ($campus == null) {
+            // TODO: avertir que le campus n'existe pas
+            return $this->redirectToRoute('admin_campus');
+        }
+
+        // modifier le campus
+        $campus->setName($nouveau);
         $em->persist($campus);
         $em->flush();
 

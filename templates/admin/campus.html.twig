@@ -20,7 +20,7 @@
                 <tr>
                     <td>{{ campus.name }}</td>
                     <td>
-                        <button class="badge bg-primary">Modifier</button>
+                        <button class="badge bg-primary" onclick="modifier('{{ campus.name }}')">Modifier</button>
                         <button class="badge bg-danger">Supprimer</button>
                     </td>
                 </tr>
@@ -42,6 +42,9 @@
             let $campus_nom = document.getElementById("campus_nom");
             let nom = $campus_nom.value;
 
+            if (nom === "")
+                return;
+
             if (confirm("Veuillez confirmer l'ajout du campus " + nom)) {
                 window.location.href = "{{ url('admin_campus') }}/add/" + nom;
             }
@@ -53,6 +56,16 @@
             let filtre = $filtre_nom.value;
 
             window.location.href = "{{ url('admin_campus') }}/" + filtre;
+        }
+
+        function modifier(campus)
+        {
+            let nom = prompt("Veuillez indiquer le nouveau nom du campus :");
+
+            if (nom === null || nom === "")
+                return;
+
+            window.location.href = `{{ url('admin_campus') }}/modify/${campus}/${nom}`;
         }
     </script>
 {% endblock %}
