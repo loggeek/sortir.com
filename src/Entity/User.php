@@ -223,12 +223,13 @@ class User implements  PasswordAuthenticatedUserInterface, UserInterface
 
     public function getRoles(): array
     {
-//        $roles = $this->roles;
-//        // guarantee every user at least has ROLE_USER
-//        $roles[] = 'ROLE_USER';
-//
-//        return array_unique($roles);
-        return [];
+        $roles = ['ROLE_USER'];
+
+        if ($this->isadmin) {
+            $roles[] = 'ROLE_ADMIN';
+        }
+
+        return $roles;
     }
 
     public function eraseCredentials(): void
