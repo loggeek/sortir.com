@@ -7,6 +7,10 @@
     <div class="collapse navbar-collapse">
         <ul class="navbar-nav">
             {% if app.user %}
+                {% if app.user.isadmin %}
+                    <li class="nav-item d-flex me-2"><a class="nav-link text-success" href="{{ path('admin_ville') }}">Villes</a></li>
+                    <li class="nav-item d-flex me-2"><a class="nav-link text-success" href="{{ path('admin_campus') }}">Campus</a></li>
+                {% endif %}
                 <li class="nav-item d-flex me-2"><a class="nav-link" href="{{ path('app_home') }}">Accueil</a></li>
                 <li class="nav-item d-flex me-2"><a class="nav-link" href="{{ path('profil.edit') }}">Profil</a></li>
                 <li class="nav-item d-flex me-2"><a class="nav-link text-danger" href="{{ path('app_logout') }}">Déconnexion</a></li>
