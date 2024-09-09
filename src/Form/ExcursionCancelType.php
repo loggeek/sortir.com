@@ -36,6 +36,7 @@ class ExcursionCancelType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Excursion::class,
+            'validation_groups' => ['cancel'],
         ]);
     }
 }
