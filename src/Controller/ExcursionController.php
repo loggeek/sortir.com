@@ -163,59 +163,16 @@ class ExcursionController extends abstractController
         return $this->redirectToRoute('app_home');
     }
 
-    #[Route("/api/locations/{townId}", name: "api_locations", methods: ['GET'])]
-    public function getLocations(int $townId, LocationRepository $locationRepository, TownRepository $townRepository): JsonResponse
-    {
-        $town = $townRepository->findOneBy(['id' => $townId]);
-        $locations = $locationRepository->findBy(['town' => $townId]);
-
-        $townData = [
-            'id' => $town->getId(),
-            'name' => $town->getName(),
-            'zipcode' => $town->getZipcode(),
-        ];
-
-        $locationsData = array_map(function ($location) {
-            return [
-                'id' => $location->getId(),
-                'name' => $location->getName(),
-            ];
-        }, $locations);
-
-        $data = [
-            'town' => $townData,
-            'locations' => $locationsData,
-        ];
-        return new JsonResponse($data);
-    }
-
-    #[Route("/api/location/{locationId}", name: "api_location", methods: ['GET'])]
-    public function getLocation(int $locationId, LocationRepository $locationRepository): JsonResponse
-    {
-        $location = $locationRepository->findOneBy(['id' => $locationId]);
-
-        $locationData = [
-            'id' => $location->getId(),
-            'name' => $location->getName(),
-            'adress' => $location->getAddress(),
-            'longitude' => $location->getLongitude(),
-            'latitude' => $location->getLatitude(),
-        ];
-
-        $data = [
-            'location' => $locationData,
-        ];
-        return new JsonResponse($data);
-    }
-
     #[Route('/excursion/{id}/modifier', name: 'app_excursion_modifier')]
-    public function modifier($id, Request $request, EntityManagerInterface $em, TownRepository $townRepository): Response
+    public function modifier($id, Request $request, EntityManagerInterface $em, TownRepository $townRepository, LocationRepository $locationRepository): Response
     {
         $user = $this->getUser();
         $towns = $townRepository->findAll();
 
         $excursion = $em->getRepository(Excursion::class)->find($id);
         $excursionForm = $this->createForm(ExcursionModifyType::class, $excursion, ['user' => $user]);
+
+        $location = $locationRepository->find($excursion->getLocation()->getId());
 
         $excursionForm->handleRequest($request);
 
@@ -257,9 +214,8 @@ class ExcursionController extends abstractController
         return $this->render('excursion/form.html.twig', [
             'excursionForm' => $excursionForm->createView(),
             'towns' => $towns,
+            'location' => $location,
             'modifie' => true,
         ]);
-
     }
-
 }

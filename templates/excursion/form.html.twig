@@ -43,7 +43,12 @@
             <select id="town" name="town" class="form-select">
                 <option>-- Selectionner une ville --</option>
                 {% for town in towns %}
-                    <option value= {{ town.id }}>{{ town.name }}</option>
+                    <option value="{{ town.id }}"
+                            {% if location is defined and location.town.id == town.id %}
+                    selected
+                            {% endif %}>
+                        {{ town.name }}
+                    </option>
                 {% endfor %}
             </select>
 
@@ -61,17 +66,21 @@
                 </a>
             </div>
 
-            <label for="adress">Rue</label>
-            <input id="adress" value="" class="form-control" disabled="disabled" style="background-color: white">
+            <label for="address">Rue</label>
+            <input id="address" value="{{ location is defined ? (location.address ?: '') : '' }}" class="form-control"
+                   disabled="disabled" style="background-color: white">
 
             <label for="cp">Code Postal</label>
-            <input id="cp" value="" class="form-control" disabled="disabled" style="background-color: white">
+            <input id="cp" value="{{ location is defined ? (location.town.zipcode ?: '') : '' }}" class="form-control"
+                   disabled="disabled" style="background-color: white">
 
             <label for="latitude">Latitude</label>
-            <input id="latitude" value="" class="form-control" disabled="disabled" style="background-color: white">
+            <input id="latitude" value="{{ location is defined ? (location.latitude ?: '') : '' }}" class="form-control"
+                   disabled="disabled" style="background-color: white">
 
             <label for="longitude">Longitude</label>
-            <input id="longitude" value="" class="form-control" disabled="disabled" style="background-color: white">
+            <input id="longitude" value="{{ location is defined ? (location.longitude ?: '') : '' }}"
+                   class="form-control" disabled="disabled" style="background-color: white">
 
         </div>
     </div>
@@ -92,21 +101,29 @@
 
         document.addEventListener('DOMContentLoaded', function () {
 
-            let locationsContainer = document.getElementById('excursion_location');
-            locationsContainer.disabled = true;
+            let locationsSelector = document.getElementById('excursion_location')
+                ? document.getElementById('excursion_location')
+                : document.getElementById('excursion_modify_location');
 
-            let villeSelector = document.getElementById('town');
-            let locationSelector = document.getElementById('excursion_location');
+            locationsSelector.disabled = true;
 
-            if (villeSelector) {
-                villeSelector.addEventListener('change', function () {
-                    let selectedTown = villeSelector.options[villeSelector.selectedIndex].value;
+            let townSelector = document.getElementById('town');
+            let addressContainer = document.getElementById('address');
+            let latitudeContainer = document.getElementById('latitude');
+            let longitudeContainer = document.getElementById('longitude');
+            let cpContainer = document.getElementById('cp');
+
+            // Ecouter le changement de ville
+            if (townSelector) {
+                townSelector.addEventListener('change', function () {
+                    resetLocationInfo();
+                    let selectedTown = townSelector.options[townSelector.selectedIndex].value;
 
                     if (selectedTown) {
                         fetch(`/api/locations/${selectedTown}`)
                             .then(response => {
                                 if (!response.ok) {
-                                    locationsContainer.disabled = true;
+                                    locationsSelector.disabled = true;
                                     throw new Error('Network response was not ok');
                                 }
                                 return response.json();
@@ -122,15 +139,16 @@
                 });
             }
 
-            if (locationSelector) {
-                locationSelector.addEventListener('change', function () {
-                    let selectedLocation = locationSelector.options[locationSelector.selectedIndex].value;
+            // Ecouter le changement de location
+            if (locationsSelector) {
+                locationsSelector.addEventListener('change', function () {
+                    let selectedLocation = locationsSelector.options[locationsSelector.selectedIndex].value;
 
                     if (selectedLocation) {
                         fetch(`/api/location/${selectedLocation}`)
                             .then(response => {
                                 if (!response.ok) {
-                                    locationsContainer.disabled = true;
+                                    locationsSelector.disabled = true;
                                     throw new Error('Network response was not ok');
                                 }
                                 return response.json();
@@ -145,46 +163,47 @@
                 });
             }
 
+            // Afficher la liste des locations
             function displayLocations(locations) {
-                let locationsContainer = document.getElementById('excursion_location');
-
-                locationsContainer.innerHTML = ''; // Réinitialiser le contenu
+                locationsSelector.innerHTML = ''; // Réinitialiser le contenu
 
                 let defaultOption = document.createElement('option');
                 defaultOption.textContent = '-- Sélectionner un lieu --';
                 defaultOption.value = '';
-                locationsContainer.appendChild(defaultOption);
+                locationsSelector.appendChild(defaultOption);
 
                 if (locations.length > 0) {
-                    locationsContainer.disabled = false;
+                    locationsSelector.disabled = false;
                     locations.forEach(location => {
                         let option = document.createElement('option');
                         option.value = location.id; // ID du lieu
                         option.textContent = location.name; // Nom du lieu
-                        locationsContainer.appendChild(option);
+                        locationsSelector.appendChild(option);
                     });
                 } else {
                     let noOption = document.createElement('option');
                     noOption.textContent = 'Aucun lieu trouvé.';
                     noOption.value = '';
-                    locationsContainer.appendChild(noOption);
+                    locationsSelector.appendChild(noOption);
                 }
             }
 
+            // Afficher le bon CP
             function displayCP(town) {
-                let cpContainer = document.getElementById('cp');
                 cpContainer.value = town.zipcode;
             }
 
+            // Afficher les bonnes addresses, Long. et lat.
             function displayLocation(location) {
-                let adressContainer = document.getElementById('adress');
-                adressContainer.value = location.adress;
-
-                let latitudeContainer = document.getElementById('latitude');
+                addressContainer.value = location.address;
                 latitudeContainer.value = location.latitude;
-
-                let longitudeContainer = document.getElementById('longitude');
                 longitudeContainer.value = location.longitude;
+            }
+
+            function resetLocationInfo() {
+                addressContainer.value = "";
+                latitudeContainer.value = "";
+                longitudeContainer.value = "";
             }
 
         });
