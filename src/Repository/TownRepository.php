@@ -16,6 +16,24 @@ class TownRepository extends ServiceEntityRepository
         parent::__construct($registry, Town::class);
     }
 
+    public function findAndFilter(string $filter): array
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.name LIKE :filter')
+            ->setParameter('filter', '%'.$filter.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findOneByName(string $name): ?Town
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.name = :name')
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     //    /**
     //     * @return Town[] Returns an array of Town objects
     //     */

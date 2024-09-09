@@ -1,0 +1,93 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Gestion des villes</h1>
+
+    <label for="filtre_nom">Filtrer les villes :</label>
+    <input id="filtre_nom" type="text" placeholder="&#x1F50E;&#xFE0E;">
+    <a href="#" class="btn btn-sm btn-primary" onclick="filtrer()">Rechercher</a>
+
+    <div class="table-responsive" style="max-height: 400px">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Ville</th>
+                <th scope="col">Code postal</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for ville in villes %}
+                <tr>
+                    <td>{{ ville.name }}</td>
+                    <td>{{ ville.zipcode }}</td>
+                    <td>
+                        <button class="badge bg-primary" onclick="modifier('{{ ville.name }}', '{{ ville.zipcode }}')">Modifier</button>
+                        <button class="badge bg-danger" onclick="supprimer('{{ ville.name }}')">Supprimer</button>
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td>
+                    <input id="ville_nom" type="text">
+                </td>
+                <td>
+                    <input id="ville_code" type="text">
+                </td>
+                <td>
+                    <button class="badge bg-success" onclick="ajouter()">Ajouter</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        function ajouter()
+        {
+            let $ville_nom = document.getElementById("ville_nom");
+            let nom = $ville_nom.value;
+
+            let $ville_code = document.getElementById("ville_code");
+            let code = $ville_code.value;
+
+            if (nom === "" || code === "")
+                return;
+
+            if (confirm("Veuillez confirmer l'ajout de la ville " + nom)) {
+                window.location.href = `{{ url('admin_ville') }}/add/${nom}/${code}`;
+            }
+        }
+
+        function filtrer()
+        {
+            let $filtre_nom = document.getElementById("filtre_nom");
+            let filtre = $filtre_nom.value;
+
+            window.location.href = "{{ url('admin_ville') }}/" + filtre;
+        }
+
+        function modifier(ville, zipcode)
+        {
+            let nom = prompt("Veuillez indiquer le nouveau nom de la ville (laisser vide pour ne pas changer) :");
+            if (nom === null) return;
+            if (nom === "") {
+                nom = ville;
+            }
+
+            let code = prompt("Veuillez indiquer le nouveau code postal de la ville (laisser vide pour ne pas changer) :");
+            if (code === null) return;
+            if (code === "") {
+                code = zipcode;
+            }
+
+            window.location.href = `{{ url('admin_ville') }}/modify/${ville}/${nom}/${code}`;
+        }
+
+        function supprimer(ville)
+        {
+            if (confirm("Veuillez confirmer la suppression de la ville " + ville + ".\nCette action est irréversible !")) {
+                window.location.href = "{{ url('admin_ville') }}/delete/" + ville;
+            }
+        }
+    </script>
+{% endblock %}
