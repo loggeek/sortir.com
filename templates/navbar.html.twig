@@ -6,27 +6,34 @@
         </a>
 
         {% if app.user %}
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
-                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
+                    aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <div class="collapse navbar-collapse" id="navbarText">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     {% if app.user.isadmin %}
                         <li class="nav-item me-2"><a class="nav-link text-primary"
-                                                            href="{{ path('admin_ville') }}">Villes</a></li>
+                                                     href="{{ path('admin_ville') }}">Villes</a></li>
                         <li class="nav-item me-2"><a class="nav-link text-primary"
-                                                            href="{{ path('admin_campus') }}">Campus</a></li>
+                                                     href="{{ path('admin_campus') }}">Campus</a></li>
                     {% endif %}
                     <li class="nav-item me-2"><a class="nav-link" href="{{ path('app_home') }}">Accueil</a>
                     </li>
                     <li class="nav-item me-2"><a class="nav-link" href="{{ path('profil.edit') }}">Profil</a>
                     </li>
                     <li class="nav-item me-2"><a class="nav-link text-danger"
-                                                        href="{{ path('app_logout') }}">Déconnexion</a></li>
-            </ul>
-        </div>
+                                                 href="{{ path('app_logout') }}">Déconnexion</a></li>
+                    <li class="nav-item me-2">
+                        <div class="logo col-md-3">
+                            <img class="img-thumbnail rounded-circle" style="max-width: 40px"
+                                 src="{{ asset(app.user.profileImage ? 'uploads/profile_images/' ~ app.user.profileImage : 'uploads/profile_images/default_image.png') }}"
+                                 alt="{{ user.profileImage ? user.username ~ '\'s profile picture' : 'Aucun photo de profil' }}">
+                        </div>
+                    </li>
+                </ul>
+            </div>
         {% endif %}
     </div>
 </nav>
