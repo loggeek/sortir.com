@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\ProfilUserType;
 use App\Repository\CampusRepository;
 use App\Repository\UserRepository;
@@ -36,9 +37,9 @@ class ProfilUserController extends AbstractController {
     #[Route('profil/edit', name: 'profil.edit')]
     function edit(Request $request, UserPasswordHasherInterface $passwordHasher, CampusRepository $campusRepository, EntityManagerInterface $em, SluggerInterface $slugger): Response {
 
+        /** @var User $user */
         $user = $this->getUser(); // Récupération de l'utilisateur actuellement connecté
         $originalProfileImage = $user->getProfileImage(); // Sauvegarde l'image actuelle
-
 
         $form = $this->createForm(ProfilUserType::class, $user);
         $form->handleRequest($request);
