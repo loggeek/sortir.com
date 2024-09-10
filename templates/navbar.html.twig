@@ -29,7 +29,7 @@
                         <div class="logo col-md-3">
                             <img class="img-thumbnail rounded-circle" style="max-width: 40px"
                                  src="{{ asset(app.user.profileImage ? 'uploads/profile_images/' ~ app.user.profileImage : 'uploads/profile_images/default_image.png') }}"
-                                 alt="{{ user.profileImage ? user.username ~ '\'s profile picture' : 'Aucun photo de profil' }}">
+                                 alt="{{ app.user.profileImage ? app.user.username ~ '\'s profile picture' : 'Aucun photo de profil' }}">
                         </div>
                     </li>
                 </ul>
