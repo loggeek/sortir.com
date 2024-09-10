@@ -9,35 +9,25 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Location>
  */
-class LocationRepository extends ServiceEntityRepository
-{
+class LocationRepository extends ServiceEntityRepository {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Location::class);
     }
 
-    //    /**
-    //     * @return Location[] Returns an array of Location objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('l')
-    //            ->andWhere('l.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('l.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function save(Location $location, bool $flush = false): void
+    {
+        $this->_em->persist($location);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
 
-    //    public function findOneBySomeField($value): ?Location
-    //    {
-    //        return $this->createQueryBuilder('l')
-    //            ->andWhere('l.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function remove(Location $location, bool $flush = false): void
+    {
+        $this->_em->remove($location);
+        if ($flush) {
+            $this->_em->flush();
+        }
+    }
 }
