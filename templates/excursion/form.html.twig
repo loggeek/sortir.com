@@ -118,49 +118,55 @@
                 townSelector.addEventListener('change', function () {
                     resetLocationInfo();
                     let selectedTown = townSelector.options[townSelector.selectedIndex].value;
-
-                    if (selectedTown) {
-                        fetch(`/api/locations/${selectedTown}`)
-                            .then(response => {
-                                if (!response.ok) {
-                                    locationsSelector.disabled = true;
-                                    throw new Error('Network response was not ok');
-                                }
-                                return response.json();
-                            })
-                            .then(data => {
-                                displayLocations(data['locations']);
-                                displayCP(data['town']);
-                            })
-                            .catch(error => {
-                                console.error('There was a problem with the fetch operation:', error);
-                            });
-                    }
+                    loadLocations(selectedTown)
                 });
+            }
+
+            function loadLocations(selectedTown){
+                if (selectedTown) {
+                    fetch(`/api/locations/${selectedTown}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                locationsSelector.disabled = true;
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            displayLocations(data['locations']);
+                            displayCP(data['town']);
+                        })
+                        .catch(error => {
+                            console.error('There was a problem with the fetch operation:', error);
+                        });
+                }
             }
 
             // Ecouter le changement de location
             if (locationsSelector) {
                 locationsSelector.addEventListener('change', function () {
                     let selectedLocation = locationsSelector.options[locationsSelector.selectedIndex].value;
-
-                    if (selectedLocation) {
-                        fetch(`/api/location/${selectedLocation}`)
-                            .then(response => {
-                                if (!response.ok) {
-                                    locationsSelector.disabled = true;
-                                    throw new Error('Network response was not ok');
-                                }
-                                return response.json();
-                            })
-                            .then(data => {
-                                displayLocation(data['location']);
-                            })
-                            .catch(error => {
-                                console.error('There was a problem with the fetch operation:', error);
-                            });
-                    }
+                    loadLocation(selectedLocation)
                 });
+            }
+
+            function loadLocation(selectedLocation){
+                if (selectedLocation) {
+                    fetch(`/api/location/${selectedLocation}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                locationsSelector.disabled = true;
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            displayLocation(data['location']);
+                        })
+                        .catch(error => {
+                            console.error('There was a problem with the fetch operation:', error);
+                        });
+                }
             }
 
             // Afficher la liste des locations
