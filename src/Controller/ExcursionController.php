@@ -10,6 +10,7 @@ use App\Form\ExcursionModifyType;
 use App\Form\ExcursionType;
 use App\Repository\LocationRepository;
 use App\Repository\TownRepository;
+use App\Security\Voter\ExcursionVoter;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -89,6 +90,7 @@ class ExcursionController extends abstractController
     {
         $excursion = $em->getRepository(Excursion::class)->find($id);
         if (!$excursion) throw $this->createNotFoundException('Excursion not found');
+        $this->denyAccessUnlessGranted(ExcursionVoter::CANCEL, $excursion);
 
         $cancelForm = $this->createForm(ExcursionCancelType::class, $excursion);
 
@@ -112,6 +114,7 @@ class ExcursionController extends abstractController
     public function publish($id, EntityManagerInterface $em): Response
     {
         $excursion = $em->getRepository(Excursion::class)->find($id);
+        $this->denyAccessUnlessGranted(ExcursionVoter::PUBLISH, $excursion);
 
         if (!$excursion) {
             throw $this->createNotFoundException('Excursion not found');
@@ -129,6 +132,8 @@ class ExcursionController extends abstractController
     public function inscription($id, EntityManagerInterface $em): Response
     {
         $excursion = $em->getRepository(Excursion::class)->find($id);
+        $this->denyAccessUnlessGranted(ExcursionVoter::REGISTER, $excursion);
+
         /** @var User $user */
         $user = $this->getUser();
 
@@ -148,6 +153,7 @@ class ExcursionController extends abstractController
     public function desinscription($id, EntityManagerInterface $em): Response
     {
         $excursion = $em->getRepository(Excursion::class)->find($id);
+        $this->denyAccessUnlessGranted(ExcursionVoter::UNREGISTER, $excursion);
         /** @var User $user */
         $user = $this->getUser();
 
@@ -170,6 +176,7 @@ class ExcursionController extends abstractController
         $towns = $townRepository->findAll();
 
         $excursion = $em->getRepository(Excursion::class)->find($id);
+        $this->denyAccessUnlessGranted(ExcursionVoter::EDIT, $excursion);
         $excursionForm = $this->createForm(ExcursionModifyType::class, $excursion, ['user' => $user]);
 
         $location = $locationRepository->find($excursion->getLocation()->getId());
