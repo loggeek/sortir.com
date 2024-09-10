@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+<p>TEST</p>
+{#    <div class="modal" id="locationModal" tabindex="-1" aria-labelledby="locationModalLabel" aria-hidden="true">#}
+{#        001#}
+{#        <div class="modal-dialog">#}
+{#            002#}
+{#            <div class="modal-content">#}
+{#                003#}
+{#                <div class="modal-header">#}
+{#                    004#}
+{#                    <h5 class="modal-title" id="locationModalLabel">Créer un nouveau lieu</h5>#}
+{#                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>#}
+{#                </div>#}
+{#                <div class="modal-body">#}
+                    {{ form_start(form) }}
+                    {{ form_row(form.name) }}
+                    {{ form_row(form.address) }}
+                    {{ form_row(form.latitude) }}
+                    {{ form_row(form.longitude) }}
+                    {{ form_end(form) }}
+{#                </div>#}
+{#                <div class="modal-footer">#}
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                    <button type="submit" form="location_form" class="btn btn-primary">Enregistrer</button>
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
+    <!-- JS Bootstrap -->
+{#    {% block javascripts %}#}
+{#        <script src="{{ asset('js/bootstrap.min.js') }}"></script>#}
+{#        <script src="{{ asset('js/locationModalForm.js') }}"></script>#}
+{#    {% endblock %}#}
+
+{#    <script>#}
+
+{#        document.addEventListener('DOMContentLoaded', () => {#}
+{#            const townSelect = document.getElementById('town');#}
+{#            const locationSelect = document.getElementById('locations');#}
+
+{#            townSelect.addEventListener('change', (event) => {#}
+{#                const townId = event.target.value;#}
+
+{#                fetch(`/location/by-town/${townId}`)#}
+{#                    .then(response => response.json())#}
+{#                    .then(data => {#}
+{#                        locationSelect.innerHTML = '';#}
+{#                        data.forEach(location => {#}
+{#                            let option = document.createElement('option');#}
+{#                            option.value = location.id;#}
+{#                            option.textContent = location.name;#}
+{#                            locationSelect.appendChild(option);#}
+{#                        });#}
+{#                    });#}
+{#            });#}
+
+{#            locationSelect.addEventListener('change', (event) => {#}
+{#                const locationId = event.target.value;#}
+
+{#                fetch(`/location/${locationId}`)#}
+{#                    .then(response => response.json())#}
+{#                    .then(data => {#}
+{#                        document.getElementById('location_latitude').value = data.latitude;#}
+{#                        document.getElementById('location_longitude').value = data.longitude;#}
+{#                    });#}
+{#            });#}
+
+{#            document.getElementById('showlocationModal').addEventListener('click', () => {#}
+{#                const locationModal = new bootstrap.Modal(document.getElementById('locationModal'));#}
+{#                locationModal.show();#}
+{#            });#}
+{#        });#}
+
+
+{#    </script>#}
+
+{% endblock %}
+
+    {# Inclusion du traitement de l'affichage de la fenêtre modale #}
