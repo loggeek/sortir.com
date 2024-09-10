@@ -3,7 +3,11 @@
 {% block title %}Création d'une sortie{% endblock %}
 {% block body %}
 
-    <h2 class="text-center">Créer une sortie</h2>
+    {% if modifie %}
+        <h2 class="text-center">Modifier une sortie</h2>
+    {% else %}
+        <h2 class="text-center">Créer une sortie</h2>
+    {% endif %}
 
     {{ form_start(excursionForm) }}
 
@@ -105,13 +109,14 @@
                 ? document.getElementById('excursion_location')
                 : document.getElementById('excursion_modify_location');
 
-            locationsSelector.disabled = true;
-
             let townSelector = document.getElementById('town');
             let addressContainer = document.getElementById('address');
             let latitudeContainer = document.getElementById('latitude');
             let longitudeContainer = document.getElementById('longitude');
             let cpContainer = document.getElementById('cp');
+
+            var modifie = {{ modifie ? 'true' : 'false' }};
+            if (!modifie) locationsSelector.innerHTML = "";
 
             // Ecouter le changement de ville
             if (townSelector) {
@@ -127,7 +132,6 @@
                     fetch(`/api/locations/${selectedTown}`)
                         .then(response => {
                             if (!response.ok) {
-                                locationsSelector.disabled = true;
                                 throw new Error('Network response was not ok');
                             }
                             return response.json();
@@ -155,7 +159,6 @@
                     fetch(`/api/location/${selectedLocation}`)
                         .then(response => {
                             if (!response.ok) {
-                                locationsSelector.disabled = true;
                                 throw new Error('Network response was not ok');
                             }
                             return response.json();

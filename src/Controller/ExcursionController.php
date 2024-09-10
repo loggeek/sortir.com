@@ -186,7 +186,7 @@ class ExcursionController extends abstractController
                 switch ($buttonClicked) {
                     case 'create':
                         $excursion->setStatus(ExcursionStatus::Created);
-                        $message = 'Sortie créée';
+                        $message = 'Sortie modifiée';
                         break;
                     case 'publish':
                         $excursion->setStatus(ExcursionStatus::Open);
