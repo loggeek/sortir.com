@@ -11,6 +11,6 @@ a.badge {
     text-decoration: none;
 }
 
-img {
+img#rounded-circle {
     aspect-ratio: 1/1;
 }
