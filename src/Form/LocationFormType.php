@@ -6,6 +6,7 @@ use App\Entity\Location;
 use App\Entity\Town;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -32,11 +33,14 @@ class LocationFormType extends AbstractType
             ->add('town', EntityType::class, [
                 'class' => Town::class,
                 'label' => 'Ville',
-                'choice_label' => 'id',
+                'choice_label' => 'name',
             ])
-            ->add('submit', SubmitType::class, [
-                'label' => 'Enregistrer'
-            ])
+//            ->add('submit', SubmitType::class, [
+//                'label' => 'Enregistrer'
+//            ])
+//            ->add('reset', ResetType::class, [
+//                'label' => 'Annuler'
+//            ])
         ;
     }
 

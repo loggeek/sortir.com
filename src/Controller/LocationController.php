@@ -32,9 +32,9 @@ class LocationController extends AbstractController
         ]);
     }
 
-    #[Route('/location/by-town/{townId}', name: 'location_by_town')]
-    public  function getLocationByTown(int $townId, LocationRepository $locationRepository) : Response {
-        $locations =$locationRepository->findBy(['town' => $townId]);
+    #[Route('/location/by-town/{townName}', name: 'location_by_town')]
+    public  function getLocationByTown(string $townName, LocationRepository $locationRepository) : Response {
+        $locations =$locationRepository->findBy(['town' => $townName]);
 
         return $this->json($locations);
     }
