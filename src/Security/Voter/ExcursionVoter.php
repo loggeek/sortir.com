@@ -41,7 +41,7 @@ final class ExcursionVoter extends Voter
         return match ($attribute) {
             self::REGISTER => true,
             self::CANCEL, self::PUBLISH, self::EDIT => $user->getId() === $excursion->getOrganizer()->getId(),
-            self::UNREGISTER => $excursion->getParticipants()->findFirst(fn($participant) => $user->getId() === $participant->getId())
+            self::UNREGISTER => $excursion->getParticipants()->contains($user)
         };
     }
 
