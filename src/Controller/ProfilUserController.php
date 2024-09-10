@@ -16,13 +16,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ProfilUserController extends AbstractController {
-    #[Route('/profil/user', name: 'profil_user.index')]
-    public function index(): Response
-    {
-        return $this->render('profil_user/index.html.twig', [
-            'controller_name' => 'ProfilUserController',
-        ]);
-    }
 
     #[Route('/profil/view/{id}', name: 'profile_view')]
     public function show(int $id, UserRepository $userRepository) : Response

@@ -8,12 +8,9 @@
     <div class="container">
         <div class="row">
             <div class="logo col-md-3">
-                {% if user.profileImage %}
-                    <img class="img-thumbnail rounded-circle" src="{{ asset('uploads/profile_images/' ~ user.profileImage) }}" alt="{{ user.username }}'s profile picture">
-                {% else %}
-                    <img class="img-thumbnail rounded-circle" src="../uploads/profile_images/default_image.png" class="rounded float-start" alt="Aucun photo de profil">
-                    {#                    <p class="text-center text-secondary"> Aucune image de profile disponible...</p>#}
-                {% endif %}
+                <img class="img-thumbnail rounded-circle"
+                     src="{{ asset(user.profileImage ? 'uploads/profile_images/' ~ user.profileImage : 'uploads/profile_images/default_image.png') }}"
+                     alt="{{ user.profileImage ? user.username ~ '\'s profile picture' : 'Aucun photo de profil' }}">
             </div>
             <div class="infos col-md-7">
                 <ul class="list-group list-group-flush">
