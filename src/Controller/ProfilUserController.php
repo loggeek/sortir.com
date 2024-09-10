@@ -6,15 +6,14 @@ use App\Entity\User;
 use App\Form\ProfilUserType;
 use App\Repository\CampusRepository;
 use App\Repository\UserRepository;
+use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 class ProfilUserController extends AbstractController {
 
@@ -35,7 +34,7 @@ class ProfilUserController extends AbstractController {
     }
 
     #[Route('profil/edit', name: 'profil.edit')]
-    function edit(Request $request, UserPasswordHasherInterface $passwordHasher, CampusRepository $campusRepository, EntityManagerInterface $em, SluggerInterface $slugger): Response {
+    function edit(Request $request, UserPasswordHasherInterface $passwordHasher, CampusRepository $campusRepository, EntityManagerInterface $em, FileUploader $fileUploader): Response {
 
         /** @var User $user */
         $user = $this->getUser(); // Récupération de l'utilisateur actuellement connecté
@@ -59,22 +58,11 @@ class ProfilUserController extends AbstractController {
                 $user->setPassword($hashedPassword);
             }
 
-            if($file) {
-                $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
-
-                try {
-                // Déplacez le fichier dans un répertoire dédié
-                    $file->move(
-                        $this->getParameter('kernel.project_dir').'/public/uploads/profile_images',
-                        $newFilename
-                    );
-                } catch (FileException $e) {}
-
+            // Gestion de l'image de profil
+            if ($file) {
+                $newFilename = $fileUploader->upload($file);
                 $user->setProfileImage($newFilename);
             } else {
-                // On garde l'image du profile en cours si pas de modification de l'image de profile
                 $user->setProfileImage($originalProfileImage);
             }
 
