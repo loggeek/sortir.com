@@ -10,14 +10,17 @@ use App\Repository\ExcursionRepository;
 use DateInterval;
 use DateTime;
 use DateTimeZone;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ExcursionStatusService
 {
     private ExcursionRepository $excursionRepository;
+    private EntityManagerInterface $entityManager;
 
-    public function __construct(ExcursionRepository $excursionRepository)
+    public function __construct(ExcursionRepository $excursionRepository, EntityManagerInterface $entityManager)
     {
         $this->excursionRepository = $excursionRepository;
+        $this->entityManager = $entityManager;
     }
 
     public function updateExcursionStatus(): void
@@ -25,7 +28,8 @@ class ExcursionStatusService
         $now = new DateTime('now', new DateTimeZone('Europe/Paris'));
 
         foreach ($this->excursionRepository->findAll() as $e) {
-            switch ($e->getStatus()) {
+            $status = $e->getStatus();
+            switch ($status) {
                 case ExcursionStatus::Open:
                     // toutes les places sont prises OU deadline dépassée
                     if (
@@ -68,6 +72,11 @@ class ExcursionStatusService
                     }
                 default:
             }
+            if ($status !== $e->getStatus()) {
+                // le statut a été modifié
+                $this->entityManager->persist($e);
+            }
         }
+        $this->entityManager->flush();
     }
 }
