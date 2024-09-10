@@ -34,20 +34,20 @@ class TownRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    //    /**
-    //     * @return Town[] Returns an array of Town objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('t')
-    //            ->andWhere('t.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('t.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+//        /**
+//         * @return Town[] Returns an array of Town objects
+//         */
+//        public function findByExampleField($value): array
+//        {
+//            return $this->createQueryBuilder('t')
+//                ->andWhere('t.exampleField = :val')
+//                ->setParameter('val', $value)
+//                ->orderBy('t.id', 'ASC')
+//                ->setMaxResults(10)
+//                ->getQuery()
+//                ->getResult()
+//            ;
+//        }
 
     //    public function findOneBySomeField($value): ?Town
     //    {

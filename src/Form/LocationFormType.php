@@ -18,7 +18,7 @@ class LocationFormType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Lieu : '
+                'label' => 'Nom : '
             ])
             ->add('address', TextType::class, [
                 'label' => 'Adresse : '
@@ -26,7 +26,6 @@ class LocationFormType extends AbstractType
             ->add('latitude', TextType::class, [
                 'label' => 'Latitude',
             ])
-
             ->add('longitude', TextType::class, [
                 'label' => 'Longitude',
             ])
@@ -34,14 +33,7 @@ class LocationFormType extends AbstractType
                 'class' => Town::class,
                 'label' => 'Ville',
                 'choice_label' => 'name',
-            ])
-//            ->add('submit', SubmitType::class, [
-//                'label' => 'Enregistrer'
-//            ])
-//            ->add('reset', ResetType::class, [
-//                'label' => 'Annuler'
-//            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
