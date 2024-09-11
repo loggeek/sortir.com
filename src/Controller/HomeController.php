@@ -30,12 +30,13 @@ class HomeController extends AbstractController
         $filterForm = $this->createForm(ExcursionFilterType::class, $filter, ['user' => $user]);
         $filterForm->handleRequest($request);
 
-        $excursionStatusService->updateExcursionStatus();
+        $excursions = $excursionRepository->findAndFilter($user, $filter);
+        $excursionStatusService->updateExcursionStatus($excursions);
 
         return $this->render('home.html.twig', [
             'user' => $user,
             'filterForm' => $filterForm->createView(),
-            'excursions' => $excursionRepository->findAndFilter($user, $filter),
+            'excursions' => $excursions,
             'campus' => $campusRepository->findAll()
         ]);
     }

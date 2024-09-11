@@ -21,6 +21,15 @@ class ExcursionRepository extends ServiceEntityRepository
         parent::__construct($registry, Excursion::class);
     }
 
+    public function findAll(): array
+    {
+        return $this->createQueryBuilder('e')
+            ->innerJoin("e.participants", "p")
+            ->addSelect("p")
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAndFilter(
         User $user, // the currently logged on user
         ExcursionFilter $filter,
