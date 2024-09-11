@@ -21,11 +21,23 @@ class ExcursionRepository extends ServiceEntityRepository
         parent::__construct($registry, Excursion::class);
     }
 
+    public function findAll(): array
+    {
+        return $this->createQueryBuilder('e')
+            ->innerJoin("e.participants", "p")
+            ->addSelect("p")
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAndFilter(
         User $user, // the currently logged on user
         ExcursionFilter $filter,
     ) {
         $qbd = $this->createQueryBuilder('e')
+            // Optimisation requête ManyToMany
+            ->innerJoin("e.participants", "p")
+            ->addSelect("p")
             // Ne pas afficher les sorties en cours de création par d'autres utilisateurs;
             ->andWhere('NOT (e.status = :c_created AND NOT e.organizer = :me)')
             ->setParameter('c_created', ExcursionStatus::Created->value)
