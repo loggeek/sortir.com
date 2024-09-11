@@ -23,11 +23,11 @@ class ExcursionStatusService
         $this->entityManager = $entityManager;
     }
 
-    public function updateExcursionStatus(): void
+    public function updateExcursionStatus(array $excursions): void
     {
         $now = new DateTime('now', new DateTimeZone('Europe/Paris'));
 
-        foreach ($this->excursionRepository->findAll() as $e) {
+        foreach ($excursions as $e) {
             $status = $e->getStatus();
             switch ($status) {
                 case ExcursionStatus::Open:
