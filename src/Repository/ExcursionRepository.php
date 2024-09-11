@@ -26,6 +26,9 @@ class ExcursionRepository extends ServiceEntityRepository
         ExcursionFilter $filter,
     ) {
         $qbd = $this->createQueryBuilder('e')
+            // Optimisation requête ManyToMany
+            ->innerJoin("e.participants", "p")
+            ->addSelect("p")
             // Ne pas afficher les sorties en cours de création par d'autres utilisateurs;
             ->andWhere('NOT (e.status = :c_created AND NOT e.organizer = :me)')
             ->setParameter('c_created', ExcursionStatus::Created->value)
