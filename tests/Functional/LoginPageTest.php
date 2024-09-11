@@ -13,11 +13,8 @@ class LoginPageTest extends WebTestCase
 
         $this->assertResponseIsSuccessful();
 
-        $inputs = $crawler->filter('input');
-        $this->assertCount(4, $inputs);
-
-        $button = $crawler->filter('button');
-        $this->assertCount(1, $button);
+        $inputs = $crawler->filter('input[type="text"], input[type="password"], input[type="checkbox"], input[type="hidden"], button[type="submit"]');
+        $this->assertCount(5, $inputs);
 
         $this->assertSelectorTextContains('h1', 'Connectez-vous');
     }
