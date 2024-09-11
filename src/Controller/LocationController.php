@@ -24,6 +24,8 @@ class LocationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($location);
             $em->flush();
+
+            $this->addFlash('success', 'Lieu créé');
             return  $this->redirectToRoute('app_excursion_form');
         }
 
