@@ -6,6 +6,7 @@ use App\Repository\TownRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: TownRepository::class)]
 class Town
@@ -16,9 +17,13 @@ class Town
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Le nom de la ville n\'est pas valide')]
+    #[Assert\Length(min: 1, max: 40)]
     private ?string $name = null;
 
     #[ORM\Column(length: 5, nullable: true)]
+    #[Assert\NotBlank(message: 'Le code postal n\'est pas valide')]
+    #[Assert\Length(5)]
     private ?string $zipcode = null;
 
     /**
