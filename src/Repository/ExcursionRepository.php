@@ -24,7 +24,7 @@ class ExcursionRepository extends ServiceEntityRepository
     public function findAll(): array
     {
         return $this->createQueryBuilder('e')
-            ->innerJoin("e.participants", "p")
+            ->leftJoin("e.participants", "p")
             ->addSelect("p")
             ->getQuery()
             ->getResult();
@@ -36,7 +36,7 @@ class ExcursionRepository extends ServiceEntityRepository
     ) {
         $qbd = $this->createQueryBuilder('e')
             // Optimisation requête ManyToMany
-            ->innerJoin("e.participants", "p")
+            ->leftJoin("e.participants", "p")
             ->addSelect("p")
             // Ne pas afficher les sorties en cours de création par d'autres utilisateurs;
             ->andWhere('NOT (e.status = :c_created AND NOT e.organizer = :me)')

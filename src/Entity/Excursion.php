@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: ExcursionRepository::class)]
 class Excursion
@@ -24,10 +25,12 @@ class Excursion
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Assert\NotBlank(message: 'La date n\'est pas valide')]
+    #[Assert\GreaterThan('today', message: 'La date de sortie doit être supérieure ou égale à la date du jour')]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Assert\NotBlank(message: 'La date n\'est pas valide')]
+    #[Assert\GreaterThan('yesterday', message: 'La date limite d\'inscription doit être supérieure ou égale à la date du jour')]
     private ?\DateTimeInterface $deadline = null;
 
     #[ORM\Column]
@@ -73,6 +76,16 @@ class Excursion
         $this->participants = new ArrayCollection();
         $this->date = new \DateTime();
         $this->deadline = new \DateTime();
+    }
+
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context): void
+    {
+        if ($this->deadline && $this->date && $this->deadline > $this->date) {
+            $context->buildViolation('La date limite d\'inscription doit être inférieure ou égale à la date de la sortie.')
+                ->atPath('deadline')
+                ->addViolation();
+        }
     }
 
     public function getId(): ?int

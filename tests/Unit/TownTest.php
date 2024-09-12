@@ -12,76 +12,70 @@ class TownTest extends KernelTestCase
 
     protected function setUp(): void
     {
-        parent::setUp();  // Initialise correctement le kernel
-        self::bootKernel(); // Lance le kernel de Symfony
+        // Initialise correctement le kernel
+        parent::setUp();
+        
+        // Lance le kernel de Symfony
+        self::bootKernel();
 
         // Utilisation de static::getContainer() pour récupérer le service ValidatorInterface
         $this->validator = static::getContainer()->get(ValidatorInterface::class);
     }
 
-    public function getEntity(): Town{
+    public function createTown(string $name, string $zipcode): Town{
         return (new Town())
-            ->setName('Ville 1')
-            ->setZipcode('35520');
+            ->setName($name)
+            ->setZipcode($zipcode);
     }
 
     public function testTownIsValid(): void
     {
-        $town = $this->getEntity();
-        $town->setName('Ville 1');
+        $town = $this->createTown('Ville 1', '35520');
 
+        // Valide l'objet $town en vérifiant qu'il respecte toutes les contraintes de validation définies dans l'entité
         $errors = $this->validator->validate($town);
 
+        // Vérifie qu'il n'y a aucune erreur de validation (c'est-à-dire que $town est valide)
         $this->assertCount(0, $errors);
     }
 
-    public function testTownIInvalidName(): void
+    public function testTownInvalidName(): void
     {
-        $town = $this->getEntity();
-        $town->setName('');
+        $town = $this->createTown('', '35520');
 
         $errors = $this->validator->validate($town);
-
         $this->assertCount(2, $errors);
     }
 
-    public function testTownIInvalidNameLength(): void
+    public function testTownInvalidNameLength(): void
     {
-        $town = $this->getEntity();
-        $town->setName('djdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjd');
+        $town = $this->createTown('djdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjdjd', '35520');
 
         $errors = $this->validator->validate($town);
-
         $this->assertCount(1, $errors);
     }
 
     public function testTownInvalidZipcode(): void
     {
-        $town = $this->getEntity();
-        $town->setZipcode('');
+        $town = $this->createTown('Ville 1', '');
 
         $errors = $this->validator->validate($town);
-
         $this->assertCount(2, $errors);
     }
 
     public function testTownInvalidZipcodeLength(): void
     {
-        $town = $this->getEntity();
-        $town->setZipcode('355201');
+        $town = $this->createTown('Ville 1', '355200');
 
         $errors = $this->validator->validate($town);
-
         $this->assertCount(1, $errors);
     }
 
     public function testTownInvalidZipcodeLength2(): void
     {
-        $town = $this->getEntity();
-        $town->setZipcode('3552');
+        $town = $this->createTown('Ville 1', '3552');
 
         $errors = $this->validator->validate($town);
-
         $this->assertCount(1, $errors);
     }
 
