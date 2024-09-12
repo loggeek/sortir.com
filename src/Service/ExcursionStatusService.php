@@ -2,9 +2,6 @@
 
 namespace App\Service;
 
-use App\DTO\ExcursionFilter;
-use App\Entity\Excursion;
-use App\Entity\User;
 use App\Enum\ExcursionStatus;
 use App\Repository\ExcursionRepository;
 use DateInterval;
@@ -14,12 +11,10 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class ExcursionStatusService
 {
-    private ExcursionRepository $excursionRepository;
     private EntityManagerInterface $entityManager;
 
     public function __construct(ExcursionRepository $excursionRepository, EntityManagerInterface $entityManager)
     {
-        $this->excursionRepository = $excursionRepository;
         $this->entityManager = $entityManager;
     }
 
